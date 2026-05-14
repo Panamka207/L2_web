@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>313</width>
+    <height>503</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Добавление билета</string>
+  </property>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>291</width>
+     <height>481</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="passanger_lbl">
+      <property name="text">
+       <string>Пассажир *</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QComboBox" name="passanger_comboBox"/>
+    </item>
+    <item>
+     <widget class="QLabel" name="flight_lbl">
+      <property name="text">
+       <string>Рейс *</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QComboBox" name="flight_comboBox"/>
+    </item>
+    <item>
+     <widget class="QLabel" name="ticket_label">
+      <property name="text">
+       <string>Номер билета *</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="ticket_lineEdit">
+      <property name="placeholderText">
+       <string>Номер билета</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="data_label_2">
+      <property name="text">
+       <string>Дата покупки *</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QDateEdit" name="dateEdit"/>
+    </item>
+    <item>
+     <widget class="QLabel" name="class_label_3">
+      <property name="text">
+       <string>Класс полёта *</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QComboBox" name="comboBox"/>
+    </item>
+    <item>
+     <widget class="QLabel" name="place_label_4">
+      <property name="text">
+       <string>Место *</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="place_lineEdit_2">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="placeholderText">
+       <string>Место</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="price_label_5">
+      <property name="text">
+       <string>Цена *</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="price_lineEdit_3">
+      <property name="placeholderText">
+       <string>Цена</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="status_label_6">
+      <property name="text">
+       <string>Статус *</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QComboBox" name="comboBox_2"/>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton">
+      <property name="text">
+       <string>Добавить</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

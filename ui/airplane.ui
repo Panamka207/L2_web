@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>213</width>
+    <height>231</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Добавление самолёта</string>
+  </property>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>191</width>
+     <height>211</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="model_lbl">
+      <property name="text">
+       <string>Модель *</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="model_lineEdit">
+      <property name="placeholderText">
+       <string>Модель</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="number_label_2">
+      <property name="text">
+       <string>Регистрационный номер *</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="number_lineEdit_2">
+      <property name="placeholderText">
+       <string>Регистрационный номер</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="size_label_3">
+      <property name="text">
+       <string>Вместимость *</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="size_lineEdit_3">
+      <property name="placeholderText">
+       <string>Вместимость</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton">
+      <property name="text">
+       <string>Добавление</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

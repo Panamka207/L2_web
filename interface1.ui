@@ -1,0 +1,1213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1200</width>
+    <height>750</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Авиакомпания</string>
+  </property>
+  <property name="styleSheet">
+   <string>
+/* ===== GLOBAL ===== */
+QMainWindow, QWidget {
+    background-color: #0f1923;
+    color: #d0dce8;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 13px;
+}
+
+/* ===== SIDE PANEL ===== */
+QFrame#sidePanel {
+    background-color: #141f2d;
+    border-right: 1px solid #1e3450;
+    min-width: 190px;
+    max-width: 190px;
+}
+
+QLabel#appTitle {
+    color: #4fc3f7;
+    font-size: 17px;
+    font-weight: bold;
+    padding: 18px 12px 2px 12px;
+    letter-spacing: 1px;
+}
+
+QLabel#appSubtitle {
+    color: #5a7a96;
+    font-size: 11px;
+    padding: 0 12px 14px 12px;
+    letter-spacing: 0.5px;
+}
+
+QLabel#userLabel {
+    color: #5a7a96;
+    font-size: 11px;
+    padding: 8px 12px 16px 16px;
+}
+
+/* ===== MENU BUTTONS ===== */
+QPushButton[checkable=&quot;true&quot;] {
+    background-color: transparent;
+    color: #8faabf;
+    border: none;
+    border-radius: 0;
+    text-align: left;
+    padding: 11px 12px 11px 20px;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+QPushButton[checkable=&quot;true&quot;]:hover {
+    background-color: #1a2d42;
+    color: #d0dce8;
+}
+
+QPushButton[checkable=&quot;true&quot;]:checked {
+    background-color: #0d2137;
+    color: #4fc3f7;
+    border-left: 3px solid #4fc3f7;
+    font-weight: bold;
+}
+
+/* ===== TOP BAR ===== */
+QFrame#topBar {
+    background-color: #141f2d;
+    border-bottom: 1px solid #1e3450;
+    min-height: 52px;
+    max-height: 52px;
+}
+
+QLabel#pageTitle {
+    color: #e0eaf3;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 0 0 0 6px;
+}
+
+/* ===== ACTION BAR ===== */
+QFrame#actionBar {
+    background-color: #0f1923;
+    border-bottom: 1px solid #1a2d42;
+    min-height: 44px;
+    max-height: 44px;
+}
+
+/* ===== FILTER BAR ===== */
+QFrame#filterBar {
+    background-color: #111b27;
+    border-bottom: 1px solid #1a2d42;
+    min-height: 42px;
+    max-height: 42px;
+}
+
+/* ===== INPUTS ===== */
+QLineEdit, QComboBox, QDateEdit {
+    background-color: #1a2d42;
+    color: #d0dce8;
+    border: 1px solid #1e3a55;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 12px;
+    min-height: 26px;
+}
+
+QLineEdit:focus, QComboBox:focus, QDateEdit:focus {
+    border: 1px solid #4fc3f7;
+}
+
+QLineEdit::placeholder {
+    color: #4a6a82;
+}
+
+QComboBox::drop-down {
+    border: none;
+    width: 20px;
+}
+
+QComboBox::down-arrow {
+    width: 10px;
+    height: 10px;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #1a2d42;
+    color: #d0dce8;
+    border: 1px solid #1e3a55;
+    selection-background-color: #0d2137;
+    selection-color: #4fc3f7;
+}
+
+/* ===== BUTTONS ===== */
+QPushButton:not([checkable=&quot;true&quot;]) {
+    background-color: #1a3a5c;
+    color: #b8d4ec;
+    border: 1px solid #1e4a72;
+    border-radius: 5px;
+    padding: 6px 14px;
+    font-size: 12px;
+    min-height: 26px;
+}
+
+QPushButton:not([checkable=&quot;true&quot;]):hover {
+    background-color: #1e4a72;
+    color: #e0f0ff;
+    border-color: #4fc3f7;
+}
+
+QPushButton:not([checkable=&quot;true&quot;]):pressed {
+    background-color: #0d2137;
+}
+
+QPushButton#btnAdd {
+    background-color: #0d4a2d;
+    color: #6ddfa0;
+    border: 1px solid #1a6b44;
+}
+
+QPushButton#btnAdd:hover {
+    background-color: #1a6b44;
+    color: #a0f0c0;
+    border-color: #4dbb80;
+}
+
+QPushButton#btnDelete {
+    background-color: #4a0d1a;
+    color: #f08080;
+    border: 1px solid #7a1a2a;
+}
+
+QPushButton#btnDelete:hover {
+    background-color: #7a1a2a;
+    color: #ffaaaa;
+    border-color: #cc4444;
+}
+
+QPushButton#btnSearch {
+    background-color: #0d3a5c;
+    color: #80c8f0;
+    border: 1px solid #1a5580;
+}
+
+QPushButton#btnSearch:hover {
+    background-color: #1a5580;
+    border-color: #4fc3f7;
+    color: #d0eeff;
+}
+
+QPushButton#btnReset {
+    background-color: #2a1a0d;
+    color: #d4a060;
+    border: 1px solid #5a3a1a;
+}
+
+QPushButton#btnReset:hover {
+    background-color: #5a3a1a;
+    color: #f0c080;
+    border-color: #c08040;
+}
+
+/* ===== TABLES ===== */
+QTableWidget {
+    background-color: #0f1923;
+    color: #c8d8e8;
+    gridline-color: #1a2d42;
+    border: none;
+    font-size: 12px;
+    selection-background-color: #0d2a40;
+    selection-color: #80d0f8;
+    alternate-background-color: #111e2c;
+}
+
+QTableWidget::item {
+    padding: 5px 8px;
+    border: none;
+}
+
+QTableWidget::item:selected {
+    background-color: #0d2a40;
+    color: #80d0f8;
+}
+
+QHeaderView::section {
+    background-color: #1a2d42;
+    color: #7ab8d8;
+    border: none;
+    border-right: 1px solid #0f1923;
+    border-bottom: 2px solid #4fc3f7;
+    padding: 6px 8px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+QHeaderView::section:hover {
+    background-color: #203a55;
+    color: #a0d8f8;
+    cursor: pointer;
+}
+
+QScrollBar:vertical {
+    background: #0f1923;
+    width: 8px;
+    border-radius: 4px;
+}
+
+QScrollBar::handle:vertical {
+    background: #1e3a55;
+    border-radius: 4px;
+    min-height: 30px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #2a5a80;
+}
+
+QScrollBar:horizontal {
+    background: #0f1923;
+    height: 8px;
+    border-radius: 4px;
+}
+
+QScrollBar::handle:horizontal {
+    background: #1e3a55;
+    border-radius: 4px;
+    min-width: 30px;
+}
+
+/* ===== GROUP BOX ===== */
+QGroupBox {
+    background-color: #111b27;
+    border: 1px solid #1e3450;
+    border-radius: 7px;
+    margin-top: 8px;
+    padding-top: 6px;
+    color: #7ab8d8;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 8px;
+    color: #4fc3f7;
+    background-color: #111b27;
+}
+
+/* ===== STATUS BAR ===== */
+QStatusBar {
+    background-color: #0a1520;
+    color: #4a7a9a;
+    border-top: 1px solid #1a2d42;
+    font-size: 11px;
+}
+
+/* ===== MENU BAR ===== */
+QMenuBar {
+    background-color: #0a1520;
+    color: #8aaabf;
+    border-bottom: 1px solid #1a2d42;
+    padding: 2px 4px;
+    font-size: 12px;
+}
+
+QMenuBar::item:selected {
+    background-color: #1a2d42;
+    color: #d0dce8;
+    border-radius: 3px;
+}
+
+QMenu {
+    background-color: #141f2d;
+    color: #c8d8e8;
+    border: 1px solid #1e3450;
+}
+
+QMenu::item:selected {
+    background-color: #1a3a5c;
+    color: #4fc3f7;
+}
+
+QMenu::separator {
+    height: 1px;
+    background-color: #1e3450;
+}
+
+/* ===== LABELS in bars ===== */
+QLabel#labelStatus, QLabel#labelFrom, QLabel#labelTo,
+QLabel#labelReportType, QLabel#labelFilterStatus,
+QLabel#labelFilterClass, QLabel#labelFilterCountry {
+    color: #6a9ab8;
+    font-size: 12px;
+}
+   </string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="mainLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QFrame" name="sidePanel">
+      <layout class="QVBoxLayout" name="sidePanelLayout">
+       <property name="spacing">
+        <number>1</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="appTitle">
+         <property name="text">
+          <string>АВИАСИСТЕМА</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="appSubtitle">
+         <property name="text">
+          <string>Учёт авиарейсов</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="line1">
+         <property name="styleSheet">
+          <string>background-color: #1e3450; max-height: 1px; margin: 0 16px;</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="flights_menuBtn">
+         <property name="text">
+          <string>Рейсы</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="passenger_menuBtn">
+         <property name="text">
+          <string>Пассажиры</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="ticket_menuBtn">
+         <property name="text">
+          <string>Билеты</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="airport_menuBtn">
+         <property name="text">
+          <string>Аэропорты</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="airplane_menuBtn">
+         <property name="text">
+          <string>Самолёты</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="sotrudnik_menuBtn">
+         <property name="text">
+          <string>Сотрудники</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="otchet_menuBtn">
+         <property name="text">
+          <string>Отчёты</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="sidespacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QFrame" name="line2">
+         <property name="styleSheet">
+          <string>background-color: #1e3450; max-height: 1px; margin: 0 16px;</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="userLabel">
+         <property name="text">
+          <string>Администратор</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="rightLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QFrame" name="topBar">
+        <layout class="QHBoxLayout" name="topBarLayout">
+         <property name="spacing">
+          <number>10</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="pageTitle">
+           <property name="text">
+            <string>Рейсы</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="topBarSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="searchField">
+           <property name="placeholderText">
+            <string>Поиск по всем полям...</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnSearch">
+           <property name="text">
+            <string>Найти</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnReset">
+           <property name="text">
+            <string>Сбросить</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="actionBar">
+        <layout class="QHBoxLayout" name="actionBarLayout">
+         <property name="spacing">
+          <number>8</number>
+         </property>
+         <item>
+          <widget class="QPushButton" name="btnAdd">
+           <property name="text">
+            <string>+ Добавить</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnEdit">
+           <property name="text">
+            <string>✏ Изменить</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnDelete">
+           <property name="text">
+            <string>✕ Удалить</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnRefresh">
+           <property name="text">
+            <string>↺ Обновить</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="actionSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="filterBar">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <layout class="QHBoxLayout" name="filterBarLayout">
+         <property name="spacing">
+          <number>10</number>
+         </property>
+         <item>
+          <widget class="QStackedWidget" name="filterStack">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <widget class="QWidget" name="filterPageFlights">
+            <layout class="QHBoxLayout" name="filterFlightsLayout">
+             <property name="spacing">
+              <number>10</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="labelFilterStatus">
+               <property name="text">
+                <string>Статус:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="cmbFlightStatus">
+               <item>
+                <property name="text">
+                 <string>Все статусы</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>По расписанию</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Задержан</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Отменён</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Выполнен</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <spacer>
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="filterPagePassengers">
+            <layout class="QHBoxLayout" name="filterPassengersLayout">
+             <item>
+              <spacer>
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="filterPageTickets">
+            <layout class="QHBoxLayout" name="filterTicketsLayout">
+             <property name="spacing">
+              <number>10</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="labelFilterStatusT">
+               <property name="text">
+                <string>Статус:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="cmbTicketStatus">
+               <item>
+                <property name="text">
+                 <string>Все статусы</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Активен</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Отменён</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Использован</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="labelFilterClass">
+               <property name="text">
+                <string>Класс:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="cmbTicketClass">
+               <item>
+                <property name="text">
+                 <string>Все классы</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Эконом</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Бизнес</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Первый</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <spacer>
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="filterPageAirports">
+            <layout class="QHBoxLayout" name="filterAirportsLayout">
+             <property name="spacing">
+              <number>10</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="labelFilterCountry">
+               <property name="text">
+                <string>Страна:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="cmbAirportCountry">
+               <item>
+                <property name="text">
+                 <string>Все страны</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <spacer>
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="filterPageAirplanes">
+            <layout class="QHBoxLayout" name="filterAirplanesLayout">
+             <item>
+              <spacer>
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="filterPageStaff">
+            <layout class="QHBoxLayout" name="filterStaffLayout">
+             <property name="spacing">
+              <number>10</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="labelFilterGender">
+               <property name="styleSheet">
+                <string>color: #6a9ab8; font-size: 12px;</string>
+               </property>
+               <property name="text">
+                <string>Пол:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="cmbStaffGender">
+               <item>
+                <property name="text">
+                 <string>Все</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Мужской</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Женский</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="labelFilterPosition">
+               <property name="styleSheet">
+                <string>color: #6a9ab8; font-size: 12px;</string>
+               </property>
+               <property name="text">
+                <string>Должность:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEditPosition">
+               <property name="placeholderText">
+                <string>Фильтр по должности...</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer>
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="filterPageReports">
+            <layout class="QHBoxLayout" name="filterReportsLayout">
+             <item>
+              <spacer>
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QStackedWidget" name="stackedWidget">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="pageReys">
+         <layout class="QVBoxLayout" name="pageReysLayout">
+          <item>
+           <widget class="QTableWidget" name="tableReys">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>100</height>
+             </size>
+            </property>
+            <property name="editTriggers">
+             <set>QAbstractItemView::NoEditTriggers</set>
+            </property>
+            <property name="alternatingRowColors">
+             <bool>true</bool>
+            </property>
+            <property name="selectionBehavior">
+             <enum>QAbstractItemView::SelectRows</enum>
+            </property>
+            <property name="sortingEnabled">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="pagePassenger">
+         <layout class="QVBoxLayout" name="pagePassengerLayout">
+          <item>
+           <widget class="QTableWidget" name="tablePassenger">
+            <property name="editTriggers">
+             <set>QAbstractItemView::NoEditTriggers</set>
+            </property>
+            <property name="alternatingRowColors">
+             <bool>true</bool>
+            </property>
+            <property name="selectionBehavior">
+             <enum>QAbstractItemView::SelectRows</enum>
+            </property>
+            <property name="sortingEnabled">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="pageTickets">
+         <layout class="QVBoxLayout" name="pageTicketsLayout">
+          <item>
+           <widget class="QTableWidget" name="tableTickets">
+            <property name="editTriggers">
+             <set>QAbstractItemView::NoEditTriggers</set>
+            </property>
+            <property name="alternatingRowColors">
+             <bool>true</bool>
+            </property>
+            <property name="selectionBehavior">
+             <enum>QAbstractItemView::SelectRows</enum>
+            </property>
+            <property name="sortingEnabled">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="pageAirport">
+         <layout class="QVBoxLayout" name="pageAirportLayout">
+          <item>
+           <widget class="QTableWidget" name="tableAirport">
+            <property name="editTriggers">
+             <set>QAbstractItemView::NoEditTriggers</set>
+            </property>
+            <property name="alternatingRowColors">
+             <bool>true</bool>
+            </property>
+            <property name="selectionBehavior">
+             <enum>QAbstractItemView::SelectRows</enum>
+            </property>
+            <property name="sortingEnabled">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="pagePlane">
+         <layout class="QVBoxLayout" name="pagePlaneLayout">
+          <item>
+           <widget class="QTableWidget" name="tablePlane">
+            <property name="editTriggers">
+             <set>QAbstractItemView::NoEditTriggers</set>
+            </property>
+            <property name="alternatingRowColors">
+             <bool>true</bool>
+            </property>
+            <property name="selectionBehavior">
+             <enum>QAbstractItemView::SelectRows</enum>
+            </property>
+            <property name="sortingEnabled">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="pageStaff">
+         <layout class="QVBoxLayout" name="pageStaffLayout">
+          <item>
+           <widget class="QTableWidget" name="tableStaff">
+            <property name="editTriggers">
+             <set>QAbstractItemView::NoEditTriggers</set>
+            </property>
+            <property name="alternatingRowColors">
+             <bool>true</bool>
+            </property>
+            <property name="selectionBehavior">
+             <enum>QAbstractItemView::SelectRows</enum>
+            </property>
+            <property name="sortingEnabled">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="pageReports">
+         <layout class="QVBoxLayout" name="pageReportsLayout">
+          <item>
+           <widget class="QGroupBox" name="groupReportFilter">
+            <property name="title">
+             <string>Параметры отчёта</string>
+            </property>
+            <layout class="QHBoxLayout" name="reportFilterLayout">
+             <property name="spacing">
+              <number>12</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="labelReportType">
+               <property name="text">
+                <string>Тип отчёта:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="comboReportType">
+               <item>
+                <property name="text">
+                 <string>Рейсы по датам</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Продажи билетов</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Загруженность самолётов</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="labelFrom">
+               <property name="text">
+                <string>С:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QDateEdit" name="dateFrom">
+               <property name="calendarPopup">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="labelTo">
+               <property name="text">
+                <string>По:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QDateEdit" name="dateTo">
+               <property name="calendarPopup">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="reportSpacer">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnGenerateReport">
+               <property name="text">
+                <string>Сформировать</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="tableReport">
+            <property name="editTriggers">
+             <set>QAbstractItemView::NoEditTriggers</set>
+            </property>
+            <property name="alternatingRowColors">
+             <bool>true</bool>
+            </property>
+            <property name="selectionBehavior">
+             <enum>QAbstractItemView::SelectRows</enum>
+            </property>
+            <property name="sortingEnabled">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1200</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>Файл</string>
+    </property>
+    <addaction name="actionConnect"/>
+    <addaction name="actionDisconnect"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Справка</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <action name="actionConnect">
+   <property name="text">
+    <string>Подключиться к БД</string>
+   </property>
+  </action>
+  <action name="actionDisconnect">
+   <property name="text">
+    <string>Отключиться от БД</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Выход</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>О программе</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

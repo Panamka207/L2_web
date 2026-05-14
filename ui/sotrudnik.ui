@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>272</width>
+    <height>432</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Добавление сотрудника</string>
+  </property>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>251</width>
+     <height>411</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="last_name_lbl">
+      <property name="text">
+       <string>Фамилия *</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="last_name_lineEdit">
+      <property name="placeholderText">
+       <string>Фамилия</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="first_name_lbl">
+      <property name="text">
+       <string>Имя *</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="first_name_lineEdit">
+      <property name="placeholderText">
+       <string>Имя</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="middle_name_lbl">
+      <property name="text">
+       <string>Отчество</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="middle_name_lineEdit_2">
+      <property name="placeholderText">
+       <string>Отчество</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="kval_lbl">
+      <property name="text">
+       <string>Квалификация</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="kval_lineEdit_3">
+      <property name="placeholderText">
+       <string>Квалификация</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="work_lbl">
+      <property name="text">
+       <string>Должность *</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="work_lineEdit_4">
+      <property name="placeholderText">
+       <string>Должность</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="gender_label">
+      <property name="text">
+       <string>Пол *</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QComboBox" name="gender_comboBox"/>
+    </item>
+    <item>
+     <widget class="QLabel" name="dr_label_2">
+      <property name="text">
+       <string>Дата рождения *</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QDateEdit" name="dateEdit"/>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton">
+      <property name="text">
+       <string>Добавить</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
