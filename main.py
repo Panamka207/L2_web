@@ -305,15 +305,15 @@ class LoginWindow(QDialog):
     def __init__(self):
         super().__init__()
         uic.loadUi('./ui/vhod.ui', self)
-        self.lineEdit_2.setEchoMode(QLineEdit.EchoMode.Password)
-        self.pushButton_2.clicked.connect(self.check_login)
-        self.pushButton.clicked.connect(self.close)
+        self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
+        self.btnLogin.clicked.connect(self.check_login)
+        self.btnExit.clicked.connect(self.close)
         self.setWindowTitle("Авторизация")
         self.db = Database()
 
     def check_login(self):
-        login = self.lineEdit.text().strip()
-        password = self.lineEdit_2.text().strip()
+        login = self.login_input.text().strip()
+        password = self.password_input.text().strip()
 
         if not login or not password:
             QMessageBox.warning(self, "Ошибка", "Введите логин и пароль")
@@ -328,6 +328,9 @@ class LoginWindow(QDialog):
                 "Успех",
                 f"Добро пожаловать, {login}\nРоль: {role}"
             )
+            # НЕ закрываем соединение
+            # self.db.close()  # Закомментируйте или удалите эту строку
+
             self.main_window = MyWidget()
             self.main_window.show()
             self.close()
@@ -348,8 +351,8 @@ class FlightDialog(QDialog):
         uic.loadUi('./ui/flight.ui', self)
         self.db = db
         self.flight_id = flight_id
-        self.pushButton.setText("Сохранить" if flight_id else "Добавить")
-        self.pushButton.clicked.connect(self.save)
+        self.btnSave.setText("Сохранить" if flight_id else "Добавить")
+        self.btnSave.clicked.connect(self.save)
         self.setWindowTitle(
             "Редактирование рейса" if flight_id else "Добавление рейса")
         self._load_combos()
@@ -755,6 +758,34 @@ class MyWidget(QMainWindow):
 
         self._raw = {}
 
+        # Конфигурация поиска для разных таблиц
+        self.search_config = {
+            'Flight': {
+                'search_field': self.searchField,
+                'table_widget': self.tableReys
+            },
+            'Passenger': {
+                'search_field': self.searchField,
+                'table_widget': self.tablePassenger
+            },
+            'Ticket': {
+                'search_field': self.searchField,
+                'table_widget': self.tableTickets
+            },
+            'Airport': {
+                'search_field': self.searchField,
+                'table_widget': self.tableAirport
+            },
+            'Airplane': {
+                'search_field': self.searchField,
+                'table_widget': self.tablePlane
+            },
+            'Crew': {
+                'search_field': self.searchField,
+                'table_widget': self.tableStaff
+            }
+        }
+
         self.menu_buttons = [
             self.flights_menuBtn, self.passenger_menuBtn, self.ticket_menuBtn,
             self.airport_menuBtn, self.airplane_menuBtn,
@@ -765,12 +796,36 @@ class MyWidget(QMainWindow):
         self._connect_signals()
         self._load_all_data()
 
+        # Устанавливаем начальные значения фильтров
+        self._setup_filters()
+
         self.dateFrom.setDate(QDate.currentDate())
         self.dateTo.setDate(QDate.currentDate())
 
         self.flights_menuBtn.setChecked(True)
         self.stackedWidget.setCurrentWidget(self.pageReys)
         self.filterStack.setCurrentWidget(self.filterPageFlights)
+
+    def _setup_filters(self):
+        """Устанавливает начальные значения для фильтров"""
+        # Устанавливаем значения по умолчанию для комбобоксов
+        if hasattr(self, 'cmbFlightStatus'):
+            self.cmbFlightStatus.addItems(
+                ['Все', 'По расписанию', 'Задержан', 'Отменён', 'Выполнен'])
+            self.cmbFlightStatus.setCurrentIndex(0)
+
+        if hasattr(self, 'cmbTicketStatus'):
+            self.cmbTicketStatus.addItems(
+                ['Все', 'Активен', 'Отменён', 'Использован'])
+            self.cmbTicketStatus.setCurrentIndex(0)
+
+        if hasattr(self, 'cmbTicketClass'):
+            self.cmbTicketClass.addItems(['Все', 'Эконом', 'Бизнес', 'Первый'])
+            self.cmbTicketClass.setCurrentIndex(0)
+
+        if hasattr(self, 'cmbStaffGender'):
+            self.cmbStaffGender.addItems(['Все', 'Мужской', 'Женский'])
+            self.cmbStaffGender.setCurrentIndex(0)
 
     # ── Table setup ───────────────────────────────────────────
     def _setup_tables(self):
@@ -810,17 +865,27 @@ class MyWidget(QMainWindow):
         self.otchet_menuBtn.clicked.connect(
             lambda: self._switch(self.pageReports, 'Reports', self.filterPageReports, self.otchet_menuBtn))
 
-        self.btnSearch.clicked.connect(self._apply_filters)
-        self.searchField.returnPressed.connect(self._apply_filters)
+        # Кнопки поиска и сброса
+        self.btnSearch.clicked.connect(self.search_and_filter)
+        self.searchField.returnPressed.connect(self.search_and_filter)
         self.btnReset.clicked.connect(self._reset_filters)
-        self.btnRefresh.clicked.connect(self._hard_refresh)
 
-        self.cmbFlightStatus.currentTextChanged.connect(self._apply_filters)
-        self.cmbTicketStatus.currentTextChanged.connect(self._apply_filters)
-        self.cmbTicketClass.currentTextChanged.connect(self._apply_filters)
-        self.cmbAirportCountry.currentTextChanged.connect(self._apply_filters)
-        self.cmbStaffGender.currentTextChanged.connect(self._apply_filters)
-        self.lineEditPosition.textChanged.connect(self._apply_filters)
+        # Фильтры
+        if hasattr(self, 'cmbFlightStatus'):
+            self.cmbFlightStatus.currentTextChanged.connect(
+                self.search_and_filter)
+        if hasattr(self, 'cmbTicketStatus'):
+            self.cmbTicketStatus.currentTextChanged.connect(
+                self.search_and_filter)
+        if hasattr(self, 'cmbTicketClass'):
+            self.cmbTicketClass.currentTextChanged.connect(
+                self.search_and_filter)
+        if hasattr(self, 'cmbAirportCountry'):
+            self.cmbAirportCountry.currentTextChanged.connect(
+                self.search_and_filter)
+        if hasattr(self, 'cmbStaffGender'):
+            self.cmbStaffGender.currentTextChanged.connect(
+                self.search_and_filter)
 
         self.btnAdd.clicked.connect(self._add_record)
         self.btnEdit.clicked.connect(self._edit_record)
@@ -843,6 +908,9 @@ class MyWidget(QMainWindow):
         }
         self.pageTitle.setText(titles.get(table_name, ''))
 
+        # После переключения страницы обновляем отображение
+        self.search_and_filter()
+
     # ── Load data ─────────────────────────────────────────────
     def _load_all_data(self):
         self._raw['Flight'] = self.db.get_flights_with_details()
@@ -862,12 +930,15 @@ class MyWidget(QMainWindow):
         self._refresh_country_combo()
 
     def _refresh_country_combo(self):
+        if not hasattr(self, 'cmbAirportCountry'):
+            return
+
         current = self.cmbAirportCountry.currentText()
         self.cmbAirportCountry.blockSignals(True)
         self.cmbAirportCountry.clear()
         self.cmbAirportCountry.addItem("Все страны")
-        countries = sorted({str(row[3])
-                           for row in self._raw.get('Airport', [])})
+        countries = sorted(
+            {str(row[3]) for row in self._raw.get('Airport', []) if row[3]})
         self.cmbAirportCountry.addItems(countries)
         idx = self.cmbAirportCountry.findText(current)
         if idx >= 0:
@@ -876,7 +947,6 @@ class MyWidget(QMainWindow):
 
     def _fill_table(self, tw, data):
         tw.setSortingEnabled(False)
-
         tw.clearContents()
         tw.setRowCount(len(data))
 
@@ -886,127 +956,142 @@ class MyWidget(QMainWindow):
                 tw.setItem(r, c, item)
 
         tw.setSortingEnabled(True)
-    # ── Filtering ─────────────────────────────────────────────
-    # ── Filtering ─────────────────────────────────────────────
 
-    def _apply_filters(self):
-        search = self.searchField.text().strip().lower()
-
-        table_map = {
-            'Flight': self.tableReys,
-            'Passenger': self.tablePassenger,
-            'Ticket': self.tableTickets,
-            'Airport': self.tableAirport,
-            'Airplane': self.tablePlane,
-            'Crew': self.tableStaff,
-        }
-
-        tw = table_map.get(self.current_table)
-
-        if not tw:
+    # ── Search and Filter (улучшенный) ────────────────────────
+    def search_and_filter(self):
+        """Основной метод поиска и фильтрации"""
+        config = self.search_config.get(self.current_table)
+        if not config:
             return
 
-        for row in range(tw.rowCount()):
-            show_row = True
+        table_widget = config['table_widget']
+        search_text = config['search_field'].text().strip().lower()
 
-            # Поиск
-            if search:
-                show_row = False
+        # Получаем отфильтрованные данные
+        filtered_data = self._apply_filters_to_data()
 
-                for col in range(tw.columnCount()):
-                    item = tw.item(row, col)
+        # Обновляем таблицу
+        table_widget.setSortingEnabled(False)
+        table_widget.setRowCount(len(filtered_data))
 
-                    if item and search in item.text().lower():
-                        show_row = True
+        for r, row_data in enumerate(filtered_data):
+            for c, val in enumerate(row_data):
+                item = QTableWidgetItem(str(val) if val is not None else '')
+                table_widget.setItem(r, c, item)
+
+        table_widget.setSortingEnabled(True)
+
+        # Выделяем найденные строки, если есть поисковый запрос
+        if search_text:
+            table_widget.clearSelection()
+            table_widget.setSelectionMode(
+                table_widget.SelectionMode.MultiSelection)
+
+            for r, row_data in enumerate(filtered_data):
+                # Проверяем все поля строки на соответствие поисковому запросу
+                row_has_match = False
+                for val in row_data:
+                    if val and search_text in str(val).lower():
+                        row_has_match = True
                         break
 
-            # Дополнительные фильтры
+                if row_has_match:
+                    table_widget.selectRow(r)
+        else:
+            table_widget.clearSelection()
+            table_widget.setSelectionMode(
+                table_widget.SelectionMode.SingleSelection)
+
+    def _apply_filters_to_data(self):
+        """Применяет фильтры к данным и возвращает отфильтрованный список"""
+        data = self._raw.get(self.current_table, [])
+
+        if not data:
+            return []
+
+        filtered = []
+
+        for row in data:
+            include_row = True
+
+            # Применяем фильтры в зависимости от текущей таблицы
             if self.current_table == 'Flight':
-                status = self.cmbFlightStatus.currentText()
-
-                if status != "Все":
-                    item = tw.item(row, 7)
-
-                    if item and item.text() != status:
-                        show_row = False
+                # Фильтр по статусу
+                status_filter = self.cmbFlightStatus.currentText(
+                ) if hasattr(self, 'cmbFlightStatus') else "Все"
+                if status_filter != "Все":
+                    # Статус находится на индексе 7
+                    if len(row) > 7 and row[7] != status_filter:
+                        include_row = False
 
             elif self.current_table == 'Ticket':
-                status = self.cmbTicketStatus.currentText()
-                travel_class = self.cmbTicketClass.currentText()
+                # Фильтр по статусу билета
+                status_filter = self.cmbTicketStatus.currentText(
+                ) if hasattr(self, 'cmbTicketStatus') else "Все"
+                if status_filter != "Все" and include_row:
+                    # Статус на индексе 8
+                    if len(row) > 8 and row[8] != status_filter:
+                        include_row = False
 
-                if status != "Все":
-                    item = tw.item(row, 8)
-
-                    if item and item.text() != status:
-                        show_row = False
-
-                if travel_class != "Все":
-                    item = tw.item(row, 5)
-
-                    if item and item.text() != travel_class:
-                        show_row = False
+                # Фильтр по классу билета
+                class_filter = self.cmbTicketClass.currentText(
+                ) if hasattr(self, 'cmbTicketClass') else "Все"
+                if class_filter != "Все" and include_row:
+                    # Класс на индексе 5
+                    if len(row) > 5 and row[5] != class_filter:
+                        include_row = False
 
             elif self.current_table == 'Airport':
-                country = self.cmbAirportCountry.currentText()
-
-                if country != "Все страны":
-                    item = tw.item(row, 3)
-
-                    if item and item.text() != country:
-                        show_row = False
+                # Фильтр по стране
+                country_filter = self.cmbAirportCountry.currentText() if hasattr(
+                    self, 'cmbAirportCountry') else "Все страны"
+                if country_filter != "Все страны" and include_row:
+                    # Страна на индексе 3
+                    if len(row) > 3 and row[3] != country_filter:
+                        include_row = False
 
             elif self.current_table == 'Crew':
-                gender = self.cmbStaffGender.currentText()
-                position = self.lineEditPosition.text().strip().lower()
+                # Фильтр по полу
+                gender_filter = self.cmbStaffGender.currentText(
+                ) if hasattr(self, 'cmbStaffGender') else "Все"
+                if gender_filter != "Все" and include_row:
+                    # Пол на индексе 6
+                    if len(row) > 6 and row[6] != gender_filter:
+                        include_row = False
 
-                if gender != "Все":
-                    item = tw.item(row, 6)
+            if include_row:
+                filtered.append(row)
 
-                    if item and item.text() != gender:
-                        show_row = False
+        return filtered
 
-                if position:
-                    item = tw.item(row, 5)
-
-                    if not item or position not in item.text().lower():
-                        show_row = False
-
-            # Показываем / скрываем строку
-            tw.setRowHidden(row, not show_row)
-
-        tw.clearSelection()
-
-        # ── Reset ─────────────────────────────────────────────────
     # ── Reset ─────────────────────────────────────────────────
     def _reset_filters(self):
-        self.searchField.clear()
+        """Сброс всех фильтров и поиска"""
+        # Очищаем поле поиска
+        if hasattr(self, 'searchField'):
+            self.searchField.clear()
 
-        self.cmbFlightStatus.setCurrentIndex(0)
-        self.cmbTicketStatus.setCurrentIndex(0)
-        self.cmbTicketClass.setCurrentIndex(0)
-        self.cmbAirportCountry.setCurrentIndex(0)
-        self.cmbStaffGender.setCurrentIndex(0)
+        # Сбрасываем все фильтры
+        if hasattr(self, 'cmbFlightStatus'):
+            self.cmbFlightStatus.setCurrentIndex(0)
+        if hasattr(self, 'cmbTicketStatus'):
+            self.cmbTicketStatus.setCurrentIndex(0)
+        if hasattr(self, 'cmbTicketClass'):
+            self.cmbTicketClass.setCurrentIndex(0)
+        if hasattr(self, 'cmbAirportCountry'):
+            self.cmbAirportCountry.setCurrentIndex(0)
+        if hasattr(self, 'cmbStaffGender'):
+            self.cmbStaffGender.setCurrentIndex(0)
 
-        self.lineEditPosition.clear()
-
-        table_map = {
-            'Flight': self.tableReys,
-            'Passenger': self.tablePassenger,
-            'Ticket': self.tableTickets,
-            'Airport': self.tableAirport,
-            'Airplane': self.tablePlane,
-            'Crew': self.tableStaff,
-        }
-
-        for tw in table_map.values():
-            for row in range(tw.rowCount()):
-                tw.setRowHidden(row, False)
-
+        # Полностью обновляем данные
         self._hard_refresh()
 
     # ── Hard refresh ──────────────────────────────────────────
     def _hard_refresh(self):
+        """Полное обновление всех данных"""
         self._load_all_data()
+        # После обновления применяем поиск и фильтры
+        self.search_and_filter()
 
     # ── Helpers ───────────────────────────────────────────────
     def _current_table_widget(self):

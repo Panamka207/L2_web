@@ -14,48 +14,50 @@
    <string>Авиакомпания</string>
   </property>
   <property name="styleSheet">
-   <string>
-/* ===== GLOBAL ===== */
+   <string notr="true">/* ===== GLOBAL ===== */
 QMainWindow, QWidget {
-    background-color: #0f1923;
-    color: #d0dce8;
+    background-color: #f0f8ff;  /* светло-голубой фон */
+    color: #1a3a5c;  /* темно-синий текст */
     font-family: 'Segoe UI', Arial, sans-serif;
     font-size: 13px;
 }
 
 /* ===== SIDE PANEL ===== */
 QFrame#sidePanel {
-    background-color: #141f2d;
-    border-right: 1px solid #1e3450;
+    background-color: #e6f0fa;  /* очень светлый голубой */
+    border-right: 1px solid #b8d4e8;
     min-width: 190px;
     max-width: 190px;
 }
 
 QLabel#appTitle {
-    color: #4fc3f7;
+    color: #0077be;  /* насыщенный голубой */
     font-size: 17px;
     font-weight: bold;
     padding: 18px 12px 2px 12px;
     letter-spacing: 1px;
+    background-color: transparent;  /* прозрачный фон */
 }
 
 QLabel#appSubtitle {
-    color: #5a7a96;
+    color: #5a8ab8;  /* спокойный синий */
     font-size: 11px;
     padding: 0 12px 14px 12px;
     letter-spacing: 0.5px;
+    background-color: transparent;  /* прозрачный фон */
 }
 
 QLabel#userLabel {
-    color: #5a7a96;
+    color: #6a8aaa;  /* мягкий синий */
     font-size: 11px;
     padding: 8px 12px 16px 16px;
+    background-color: transparent;  /* прозрачный фон */
 }
 
 /* ===== MENU BUTTONS ===== */
-QPushButton[checkable="true"] {
+QPushButton[checkable=&quot;true&quot;] {
     background-color: transparent;
-    color: #8faabf;
+    color: #2a5a8a;  /* синий для текста */
     border: none;
     border-radius: 0;
     text-align: left;
@@ -64,52 +66,53 @@ QPushButton[checkable="true"] {
     font-weight: normal;
 }
 
-QPushButton[checkable="true"]:hover {
-    background-color: #1a2d42;
-    color: #d0dce8;
+QPushButton[checkable=&quot;true&quot;]:hover {
+    background-color: #d4e6f5;  /* светлый голубой при наведении */
+    color: #005a9e;
 }
 
-QPushButton[checkable="true"]:checked {
-    background-color: #0d2137;
-    color: #4fc3f7;
-    border-left: 3px solid #4fc3f7;
+QPushButton[checkable=&quot;true&quot;]:checked {
+    background-color: #cce0f0;  /* выделенный пункт меню */
+    color: #0066b3;
+    border-left: 3px solid #0077be;
     font-weight: bold;
 }
 
 /* ===== TOP BAR ===== */
 QFrame#topBar {
-    background-color: #141f2d;
-    border-bottom: 1px solid #1e3450;
+    background-color: #e6f0fa;  /* тот же фон, что и sidePanel */
+    border-bottom: 1px solid #c0d8ec;
     min-height: 52px;
     max-height: 52px;
 }
 
 QLabel#pageTitle {
-    color: #e0eaf3;
+    color: #004a7c;  /* темно-синий */
     font-size: 18px;
     font-weight: bold;
     padding: 0 0 0 6px;
+    background-color: transparent;  /* прозрачный фон */
 }
 
 /* ===== ACTION BAR ===== */
 QFrame#actionBar {
-    background-color: #0f1923;
-    border-bottom: 1px solid #1a2d42;
+    background-color: #eef4fa;  /* очень светлый голубой */
+    border-bottom: 1px solid #c8ddec;
     min-height: 44px;
     max-height: 44px;
 }
 
 /* ===== FILTER BAR ===== */
 QFrame#filterBar {
-    background-color: #111b27;
-    border-bottom: 1px solid #1a2d42;
+    background-color: #e8f0f8;  /* светлый голубой */
+    border-bottom: 1px solid #c8ddec;
 }
 
 /* ===== INPUTS ===== */
 QLineEdit, QComboBox, QDateEdit {
-    background-color: #1a2d42;
-    color: #d0dce8;
-    border: 1px solid #1e3a55;
+    background-color: #ffffff;  /* белый фон */
+    color: #1a3a5c;  /* темно-синий текст */
+    border: 1px solid #a0c4e0;
     border-radius: 5px;
     padding: 5px 10px;
     font-size: 12px;
@@ -117,11 +120,11 @@ QLineEdit, QComboBox, QDateEdit {
 }
 
 QLineEdit:focus, QComboBox:focus, QDateEdit:focus {
-    border: 1px solid #4fc3f7;
+    border: 1px solid #0077be;
 }
 
 QLineEdit::placeholder {
-    color: #4a6a82;
+    color: #90a8c0;
 }
 
 QComboBox::drop-down {
@@ -135,92 +138,96 @@ QComboBox::down-arrow {
 }
 
 QComboBox QAbstractItemView {
-    background-color: #1a2d42;
-    color: #d0dce8;
-    border: 1px solid #1e3a55;
-    selection-background-color: #0d2137;
-    selection-color: #4fc3f7;
+    background-color: #ffffff;
+    color: #1a3a5c;
+    border: 1px solid #a0c4e0;
+    selection-background-color: #d4e6f5;
+    selection-color: #005a9e;
 }
 
 /* ===== BUTTONS ===== */
-QPushButton:not([checkable="true"]) {
-    background-color: #1a3a5c;
-    color: #b8d4ec;
-    border: 1px solid #1e4a72;
-    border-radius: 5px;
+QPushButton:not([checkable=&quot;true&quot;]) {
+    background-color: #d4e6f5;  /* светлый голубой */
+    color: #004a7c;  /* темно-синий */
+    border: 1px solid #90b8d8;
+    border-radius: 8px;  /* было 5px, увеличил для современного вида */
     padding: 6px 14px;
     font-size: 12px;
     min-height: 26px;
 }
 
-QPushButton:not([checkable="true"]):hover {
-    background-color: #1e4a72;
-    color: #e0f0ff;
-    border-color: #4fc3f7;
+QPushButton:not([checkable=&quot;true&quot;]):hover {
+    background-color: #b8d8f0;  /* более насыщенный голубой */
+    color: #003e6b;
+    border-color: #0077be;
 }
 
-QPushButton:not([checkable="true"]):pressed {
-    background-color: #0d2137;
+QPushButton:not([checkable=&quot;true&quot;]):pressed {
+    background-color: #a0c8e8;
 }
 
 QPushButton#btnAdd {
-    background-color: #0d4a2d;
-    color: #6ddfa0;
-    border: 1px solid #1a6b44;
+    background-color: #c8e8dc;  /* мягкий мятно-голубой */
+    color: #005a7a;
+    border: 1px solid #90c8b0;
+    border-radius: 8px;  /* скругление */
 }
 
 QPushButton#btnAdd:hover {
-    background-color: #1a6b44;
-    color: #a0f0c0;
-    border-color: #4dbb80;
+    background-color: #a8d8c8;
+    color: #003e5a;
+    border-color: #40b090;
 }
 
 QPushButton#btnDelete {
-    background-color: #4a0d1a;
-    color: #f08080;
-    border: 1px solid #7a1a2a;
+    background-color: #f0d8dc;  /* мягкий розовато-голубой оттенок */
+    color: #9a5060;
+    border: 1px solid #d0b0b8;
+    border-radius: 8px;  /* скругление */
 }
 
 QPushButton#btnDelete:hover {
-    background-color: #7a1a2a;
-    color: #ffaaaa;
-    border-color: #cc4444;
+    background-color: #e8c0c8;
+    color: #c04050;
+    border-color: #e07080;
 }
 
 QPushButton#btnSearch {
-    background-color: #0d3a5c;
-    color: #80c8f0;
-    border: 1px solid #1a5580;
+    background-color: #cce0f5;  /* нежно-голубой */
+    color: #005a9e;
+    border: 1px solid #90b4dc;
+    border-radius: 8px;  /* скругление */
 }
 
 QPushButton#btnSearch:hover {
-    background-color: #1a5580;
-    border-color: #4fc3f7;
-    color: #d0eeff;
+    background-color: #b0d0f0;
+    border-color: #0077be;
+    color: #003e7c;
 }
 
 QPushButton#btnReset {
-    background-color: #2a1a0d;
-    color: #d4a060;
-    border: 1px solid #5a3a1a;
+    background-color: #e8e0d0;  /* очень светлый бежево-голубой */
+    color: #8a7050;
+    border: 1px solid #c8bc9c;
+    border-radius: 8px;  /* скругление */
 }
 
 QPushButton#btnReset:hover {
-    background-color: #5a3a1a;
-    color: #f0c080;
-    border-color: #c08040;
+    background-color: #d8ccb0;
+    color: #a07848;
+    border-color: #c09850;
 }
 
 /* ===== TABLES ===== */
 QTableWidget {
-    background-color: #0f1923;
-    color: #c8d8e8;
-    gridline-color: #1a2d42;
+    background-color: #ffffff;  /* белый фон таблицы */
+    color: #1a3a5c;  /* темно-синий текст */
+    gridline-color: #d4e4f0;
     border: none;
     font-size: 12px;
-    selection-background-color: #0d2a40;
-    selection-color: #80d0f8;
-    alternate-background-color: #111e2c;
+    selection-background-color: #e0ecf8;
+    selection-color: #004a7c;
+    alternate-background-color: #f5faff;  /* очень светлый голубой для чередования */
 }
 
 QTableWidget::item {
@@ -229,63 +236,63 @@ QTableWidget::item {
 }
 
 QTableWidget::item:selected {
-    background-color: #0d2a40;
-    color: #80d0f8;
+    background-color: #d4e6f5;
+    color: #003e6b;
 }
 
 QHeaderView::section {
-    background-color: #1a2d42;
-    color: #7ab8d8;
+    background-color: #e0ecf8;  /* светлый голубой для заголовков */
+    color: #004a7c;
     border: none;
-    border-right: 1px solid #0f1923;
-    border-bottom: 2px solid #4fc3f7;
+    border-right: 1px solid #f0f8ff;
+    border-bottom: 2px solid #0077be;
     padding: 6px 8px;
     font-size: 12px;
     font-weight: bold;
 }
 
 QHeaderView::section:hover {
-    background-color: #203a55;
-    color: #a0d8f8;
+    background-color: #c8ddf0;
+    color: #003a6a;
     cursor: pointer;
 }
 
 QScrollBar:vertical {
-    background: #0f1923;
+    background: #e0eaf2;
     width: 8px;
     border-radius: 4px;
 }
 
 QScrollBar::handle:vertical {
-    background: #1e3a55;
+    background: #b0c8e0;
     border-radius: 4px;
     min-height: 30px;
 }
 
 QScrollBar::handle:vertical:hover {
-    background: #2a5a80;
+    background: #80a8c8;
 }
 
 QScrollBar:horizontal {
-    background: #0f1923;
+    background: #e0eaf2;
     height: 8px;
     border-radius: 4px;
 }
 
 QScrollBar::handle:horizontal {
-    background: #1e3a55;
+    background: #b0c8e0;
     border-radius: 4px;
     min-width: 30px;
 }
 
 /* ===== GROUP BOX ===== */
 QGroupBox {
-    background-color: #111b27;
-    border: 1px solid #1e3450;
+    background-color: #f5faff;  /* очень светлый голубой */
+    border: 1px solid #c0d8ec;
     border-radius: 7px;
     margin-top: 8px;
     padding-top: 6px;
-    color: #7ab8d8;
+    color: #005a9e;
     font-weight: bold;
     font-size: 12px;
 }
@@ -294,18 +301,18 @@ QGroupBox::title {
     subcontrol-origin: margin;
     subcontrol-position: top left;
     padding: 0 8px;
-    color: #4fc3f7;
-    background-color: #111b27;
+    color: #0077be;
+    background-color: #f5faff;
 }
 
 /* ===== LABELS in bars ===== */
 QLabel#labelStatus, QLabel#labelFrom, QLabel#labelTo,
 QLabel#labelReportType, QLabel#labelFilterStatus,
 QLabel#labelFilterClass, QLabel#labelFilterCountry {
-    color: #6a9ab8;
+    color: #3a6a9a;  /* приятный синий */
     font-size: 12px;
-}
-   </string>
+    background-color: transparent;  /* прозрачный фон */
+}</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="mainLayout">
@@ -320,21 +327,27 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
        </property>
        <item>
         <widget class="QLabel" name="appTitle">
+         <property name="styleSheet">
+          <string notr="true">color: #004a7c</string>
+         </property>
          <property name="text">
           <string>АВИАСИСТЕМА</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignCenter</set>
+          <set>Qt::AlignmentFlag::AlignCenter</set>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QLabel" name="appSubtitle">
+         <property name="styleSheet">
+          <string notr="true">color: #004a7c</string>
+         </property>
          <property name="text">
           <string>Учёт авиарейсов</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignCenter</set>
+          <set>Qt::AlignmentFlag::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -344,7 +357,7 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
           <string>background-color: #1e3450; max-height: 1px; margin: 0 16px;</string>
          </property>
          <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
+          <enum>QFrame::Shape::NoFrame</enum>
          </property>
         </widget>
        </item>
@@ -424,7 +437,7 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
        <item>
         <spacer name="sidespacer">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -440,12 +453,15 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
           <string>background-color: #1e3450; max-height: 1px; margin: 0 16px;</string>
          </property>
          <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
+          <enum>QFrame::Shape::NoFrame</enum>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QLabel" name="userLabel">
+         <property name="styleSheet">
+          <string notr="true">color: #004a7c</string>
+         </property>
          <property name="text">
           <string>Администратор</string>
          </property>
@@ -475,7 +491,7 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
          <item>
           <spacer name="topBarSpacer">
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -494,6 +510,27 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
          </item>
          <item>
           <widget class="QPushButton" name="btnSearch">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+    background-color: #bfdaf2;
+    color: #000000;
+    border: 2px solid #bfdaf2;
+    border-radius: 5px;
+
+}
+QPushButton:hover {
+    background-color: #c7dfee;
+}
+QPushButton:pressed {
+    background-color: #b7d4e8;
+}</string>
+           </property>
            <property name="text">
             <string>Найти</string>
            </property>
@@ -501,6 +538,27 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
          </item>
          <item>
           <widget class="QPushButton" name="btnReset">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+    background-color: #bfdaf2;
+    color: #000000;
+    border: 2px solid #bfdaf2;
+    border-radius: 5px;
+
+}
+QPushButton:hover {
+    background-color: #c7dfee;
+}
+QPushButton:pressed {
+    background-color: #b7d4e8;
+}</string>
+           </property>
            <property name="text">
             <string>Сбросить</string>
            </property>
@@ -511,42 +569,110 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
       </item>
       <item>
        <widget class="QFrame" name="actionBar">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>45</height>
+         </size>
+        </property>
         <layout class="QHBoxLayout" name="actionBarLayout">
          <property name="spacing">
           <number>8</number>
          </property>
          <item>
           <widget class="QPushButton" name="btnAdd">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+    background-color: #bfdaf2;
+    color: #000000;
+    border: 2px solid #bfdaf2;
+    border-radius: 5px;
+
+}
+QPushButton:hover {
+    background-color: #c7dfee;
+}
+QPushButton:pressed {
+    background-color: #b7d4e8;
+}</string>
+           </property>
            <property name="text">
-            <string>+ Добавить</string>
+            <string>Добавить</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="btnEdit">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+    background-color: #bfdaf2;
+    color: #000000;
+    border: 2px solid #bfdaf2;
+    border-radius: 5px;
+
+}
+QPushButton:hover {
+    background-color: #c7dfee;
+}
+QPushButton:pressed {
+    background-color: #b7d4e8;
+}</string>
+           </property>
            <property name="text">
-            <string>✏ Изменить</string>
+            <string>Изменить</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="btnDelete">
-           <property name="text">
-            <string>✕ Удалить</string>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>30</height>
+            </size>
            </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btnRefresh">
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+    background-color: #bfdaf2;
+    color: #000000;
+    border: 2px solid #bfdaf2;
+    border-radius: 5px;
+
+}
+QPushButton:hover {
+    background-color: #c7dfee;
+}
+QPushButton:pressed {
+    background-color: #b7d4e8;
+}</string>
+           </property>
            <property name="text">
-            <string>↺ Обновить</string>
+            <string>Удалить</string>
            </property>
           </widget>
          </item>
          <item>
           <spacer name="actionSpacer">
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -597,6 +723,9 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
              <height>65</height>
             </size>
            </property>
+           <property name="currentIndex">
+            <number>4</number>
+           </property>
            <widget class="QWidget" name="filterPageFlights">
             <layout class="QHBoxLayout" name="filterFlightsLayout">
              <property name="spacing">
@@ -610,38 +739,12 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="cmbFlightStatus">
-               <item>
-                <property name="text">
-                 <string>Все статусы</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>По расписанию</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Задержан</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Отменён</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Выполнен</string>
-                </property>
-               </item>
-              </widget>
+              <widget class="QComboBox" name="cmbFlightStatus"/>
              </item>
              <item>
               <spacer>
                <property name="orientation">
-                <enum>Qt::Horizontal</enum>
+                <enum>Qt::Orientation::Horizontal</enum>
                </property>
                <property name="sizeHint" stdset="0">
                 <size>
@@ -658,7 +761,7 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
              <item>
               <spacer>
                <property name="orientation">
-                <enum>Qt::Horizontal</enum>
+                <enum>Qt::Orientation::Horizontal</enum>
                </property>
                <property name="sizeHint" stdset="0">
                 <size>
@@ -683,28 +786,7 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="cmbTicketStatus">
-               <item>
-                <property name="text">
-                 <string>Все статусы</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Активен</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Отменён</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Использован</string>
-                </property>
-               </item>
-              </widget>
+              <widget class="QComboBox" name="cmbTicketStatus"/>
              </item>
              <item>
               <widget class="QLabel" name="labelFilterClass">
@@ -714,33 +796,12 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="cmbTicketClass">
-               <item>
-                <property name="text">
-                 <string>Все классы</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Эконом</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Бизнес</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Первый</string>
-                </property>
-               </item>
-              </widget>
+              <widget class="QComboBox" name="cmbTicketClass"/>
              </item>
              <item>
               <spacer>
                <property name="orientation">
-                <enum>Qt::Horizontal</enum>
+                <enum>Qt::Orientation::Horizontal</enum>
                </property>
                <property name="sizeHint" stdset="0">
                 <size>
@@ -765,18 +826,12 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="cmbAirportCountry">
-               <item>
-                <property name="text">
-                 <string>Все страны</string>
-                </property>
-               </item>
-              </widget>
+              <widget class="QComboBox" name="cmbAirportCountry"/>
              </item>
              <item>
               <spacer>
                <property name="orientation">
-                <enum>Qt::Horizontal</enum>
+                <enum>Qt::Orientation::Horizontal</enum>
                </property>
                <property name="sizeHint" stdset="0">
                 <size>
@@ -793,7 +848,7 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
              <item>
               <spacer>
                <property name="orientation">
-                <enum>Qt::Horizontal</enum>
+                <enum>Qt::Orientation::Horizontal</enum>
                </property>
                <property name="sizeHint" stdset="0">
                 <size>
@@ -850,16 +905,12 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEditPosition">
-               <property name="placeholderText">
-                <string>Фильтр по должности...</string>
-               </property>
-              </widget>
+              <widget class="QComboBox" name="cmbStaffPosition"/>
              </item>
              <item>
               <spacer>
                <property name="orientation">
-                <enum>Qt::Horizontal</enum>
+                <enum>Qt::Orientation::Horizontal</enum>
                </property>
                <property name="sizeHint" stdset="0">
                 <size>
@@ -876,7 +927,7 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
              <item>
               <spacer>
                <property name="orientation">
-                <enum>Qt::Horizontal</enum>
+                <enum>Qt::Orientation::Horizontal</enum>
                </property>
                <property name="sizeHint" stdset="0">
                 <size>
@@ -902,14 +953,312 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
          <layout class="QVBoxLayout" name="pageReysLayout">
           <item>
            <widget class="QTableWidget" name="tableReys">
+            <property name="styleSheet">
+             <string notr="true">```css
+/* ===== GLOBAL ===== */
+QMainWindow, QWidget {
+    background-color: #eef5fb;
+    color: #2b4257;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 13px;
+}
+
+/* ===== SIDE PANEL ===== */
+QFrame#sidePanel {
+    background-color: #d9e9f5;
+    border-right: 1px solid #b8d1e5;
+    min-width: 190px;
+    max-width: 190px;
+}
+
+QLabel#appTitle {
+    color: #3b82b6;
+    font-size: 17px;
+    font-weight: bold;
+    padding: 18px 12px 2px 12px;
+    letter-spacing: 1px;
+}
+
+QLabel#appSubtitle {
+    color: #6b8aa3;
+    font-size: 11px;
+    padding: 0 12px 14px 12px;
+    letter-spacing: 0.5px;
+}
+
+QLabel#userLabel {
+    color: #6b8aa3;
+    font-size: 11px;
+    padding: 8px 12px 16px 16px;
+}
+
+/* ===== MENU BUTTONS ===== */
+QPushButton[checkable=&quot;true&quot;] {
+    background-color: transparent;
+    color: #4d6980;
+    border: none;
+    border-radius: 0;
+    text-align: left;
+    padding: 11px 12px 11px 20px;
+    font-size: 13px;
+}
+
+QPushButton[checkable=&quot;true&quot;]:hover {
+    background-color: #c7dfee;
+    color: #24445d;
+}
+
+QPushButton[checkable=&quot;true&quot;]:checked {
+    background-color: #b7d4e8;
+    color: #2f6f9f;
+    border-left: 3px solid #5ba8d6;
+    font-weight: bold;
+}
+
+/* ===== TOP BAR ===== */
+QFrame#topBar {
+    background-color: #d9e9f5;
+    border-bottom: 1px solid #b8d1e5;
+    min-height: 52px;
+    max-height: 52px;
+}
+
+QLabel#pageTitle {
+    color: #2d4d66;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 0 0 0 6px;
+}
+
+/* ===== ACTION BAR ===== */
+QFrame#actionBar {
+    background-color: #e6f1f8;
+    border-bottom: 1px solid #c7dfee;
+    min-height: 44px;
+    max-height: 44px;
+}
+
+/* ===== FILTER BAR ===== */
+QFrame#filterBar {
+    background-color: #edf5fb;
+    border-bottom: 1px solid #c7dfee;
+}
+
+/* ===== INPUTS ===== */
+QLineEdit, QComboBox, QDateEdit {
+    background-color: #ffffff;
+    color: #2b4257;
+    border: 1px solid #b7d0e2;
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 12px;
+    min-height: 26px;
+}
+
+QLineEdit:focus, QComboBox:focus, QDateEdit:focus {
+    border: 1px solid #6cb7e5;
+    background-color: #fafdff;
+}
+
+QLineEdit::placeholder {
+    color: #7f9db3;
+}
+
+QComboBox::drop-down {
+    border: none;
+    width: 20px;
+}
+
+QComboBox::down-arrow {
+    width: 10px;
+    height: 10px;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #ffffff;
+    color: #2b4257;
+    border: 1px solid #b7d0e2;
+    selection-background-color: #d6eaf7;
+    selection-color: #2f6f9f;
+}
+
+/* ===== BUTTONS ===== */
+QPushButton:not([checkable=&quot;true&quot;]) {
+    background-color: #d7ebf7;
+    color: #2c5d80;
+    border: 1px solid #a7cde3;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12px;
+    min-height: 26px;
+}
+
+QPushButton:not([checkable=&quot;true&quot;]):hover {
+    background-color: #c3e1f3;
+    color: #20445f;
+    border-color: #6cb7e5;
+}
+
+QPushButton:not([checkable=&quot;true&quot;]):pressed {
+    background-color: #b1d5eb;
+}
+
+/* ===== ADD BUTTON ===== */
+QPushButton#btnAdd {
+    background-color: #d9f0ea;
+    color: #2d7a66;
+    border: 1px solid #9fd3c5;
+}
+
+QPushButton#btnAdd:hover {
+    background-color: #c7e8df;
+    border-color: #67b8a2;
+}
+
+/* ===== DELETE BUTTON ===== */
+QPushButton#btnDelete {
+    background-color: #f6e1e1;
+    color: #b05656;
+    border: 1px solid #e0b0b0;
+}
+
+QPushButton#btnDelete:hover {
+    background-color: #f0d0d0;
+    border-color: #d88888;
+}
+
+/* ===== SEARCH BUTTON ===== */
+QPushButton#btnSearch {
+    background-color: #d9ebf8;
+    color: #3574a3;
+    border: 1px solid #9fc8e5;
+}
+
+QPushButton#btnSearch:hover {
+    background-color: #c8e1f5;
+    border-color: #6cb7e5;
+}
+
+/* ===== RESET BUTTON ===== */
+QPushButton#btnReset {
+    background-color: #f4efe5;
+    color: #8d6b42;
+    border: 1px solid #dcc9aa;
+}
+
+QPushButton#btnReset:hover {
+    background-color: #ece2d0;
+    border-color: #c9aa73;
+}
+
+/* ===== TABLES ===== */
+QTableWidget {
+    background-color: #ffffff;
+    color: #2b4257;
+    gridline-color: #d7e7f2;
+    border: none;
+    font-size: 12px;
+    selection-background-color: #d7ecf9;
+    selection-color: #2f6f9f;
+    alternate-background-color: #f6fbff;
+}
+
+QTableWidget::item {
+    padding: 5px 8px;
+    border: none;
+}
+
+QTableWidget::item:selected {
+    background-color: #d7ecf9;
+    color: #2f6f9f;
+}
+
+QHeaderView::section {
+    background-color: #dcecf7;
+    color: #3f6f92;
+    border: none;
+    border-right: 1px solid #c5dceb;
+    border-bottom: 2px solid #7fb9de;
+    padding: 6px 8px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+QHeaderView::section:hover {
+    background-color: #cde3f2;
+    color: #285170;
+}
+
+QScrollBar:vertical {
+    background: #eef5fb;
+    width: 8px;
+    border-radius: 4px;
+}
+
+QScrollBar::handle:vertical {
+    background: #b7d0e2;
+    border-radius: 4px;
+    min-height: 30px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #8fb8d4;
+}
+
+QScrollBar:horizontal {
+    background: #eef5fb;
+    height: 8px;
+    border-radius: 4px;
+}
+
+QScrollBar::handle:horizontal {
+    background: #b7d0e2;
+    border-radius: 4px;
+    min-width: 30px;
+}
+
+/* ===== GROUP BOX ===== */
+QGroupBox {
+    background-color: #f7fbfe;
+    border: 1px solid #c9dceb;
+    border-radius: 8px;
+    margin-top: 8px;
+    padding-top: 6px;
+    color: #4a6f8d;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 8px;
+    color: #4d90bd;
+    background-color: #f7fbfe;
+}
+
+/* ===== LABELS ===== */
+QLabel#labelStatus,
+QLabel#labelFrom,
+QLabel#labelTo,
+QLabel#labelReportType,
+QLabel#labelFilterStatus,
+QLabel#labelFilterClass,
+QLabel#labelFilterCountry {
+    color: #6d8aa0;
+    font-size: 12px;
+}
+```
+</string>
+            </property>
             <property name="editTriggers">
-             <set>QAbstractItemView::NoEditTriggers</set>
+             <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
             </property>
             <property name="alternatingRowColors">
              <bool>true</bool>
             </property>
             <property name="selectionBehavior">
-             <enum>QAbstractItemView::SelectRows</enum>
+             <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
             </property>
             <property name="sortingEnabled">
              <bool>true</bool>
@@ -923,13 +1272,13 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
           <item>
            <widget class="QTableWidget" name="tablePassenger">
             <property name="editTriggers">
-             <set>QAbstractItemView::NoEditTriggers</set>
+             <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
             </property>
             <property name="alternatingRowColors">
              <bool>true</bool>
             </property>
             <property name="selectionBehavior">
-             <enum>QAbstractItemView::SelectRows</enum>
+             <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
             </property>
             <property name="sortingEnabled">
              <bool>true</bool>
@@ -943,13 +1292,13 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
           <item>
            <widget class="QTableWidget" name="tableTickets">
             <property name="editTriggers">
-             <set>QAbstractItemView::NoEditTriggers</set>
+             <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
             </property>
             <property name="alternatingRowColors">
              <bool>true</bool>
             </property>
             <property name="selectionBehavior">
-             <enum>QAbstractItemView::SelectRows</enum>
+             <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
             </property>
             <property name="sortingEnabled">
              <bool>true</bool>
@@ -963,13 +1312,13 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
           <item>
            <widget class="QTableWidget" name="tableAirport">
             <property name="editTriggers">
-             <set>QAbstractItemView::NoEditTriggers</set>
+             <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
             </property>
             <property name="alternatingRowColors">
              <bool>true</bool>
             </property>
             <property name="selectionBehavior">
-             <enum>QAbstractItemView::SelectRows</enum>
+             <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
             </property>
             <property name="sortingEnabled">
              <bool>true</bool>
@@ -983,13 +1332,13 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
           <item>
            <widget class="QTableWidget" name="tablePlane">
             <property name="editTriggers">
-             <set>QAbstractItemView::NoEditTriggers</set>
+             <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
             </property>
             <property name="alternatingRowColors">
              <bool>true</bool>
             </property>
             <property name="selectionBehavior">
-             <enum>QAbstractItemView::SelectRows</enum>
+             <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
             </property>
             <property name="sortingEnabled">
              <bool>true</bool>
@@ -1003,13 +1352,13 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
           <item>
            <widget class="QTableWidget" name="tableStaff">
             <property name="editTriggers">
-             <set>QAbstractItemView::NoEditTriggers</set>
+             <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
             </property>
             <property name="alternatingRowColors">
              <bool>true</bool>
             </property>
             <property name="selectionBehavior">
-             <enum>QAbstractItemView::SelectRows</enum>
+             <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
             </property>
             <property name="sortingEnabled">
              <bool>true</bool>
@@ -1063,7 +1412,7 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
               </widget>
              </item>
              <item>
-              <widget name="dateFrom" class="QDateEdit">
+              <widget class="QDateEdit" name="dateFrom">
                <property name="calendarPopup">
                 <bool>true</bool>
                </property>
@@ -1077,7 +1426,7 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
               </widget>
              </item>
              <item>
-              <widget name="dateTo" class="QDateEdit">
+              <widget class="QDateEdit" name="dateTo">
                <property name="calendarPopup">
                 <bool>true</bool>
                </property>
@@ -1086,7 +1435,7 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
              <item>
               <spacer name="reportSpacer">
                <property name="orientation">
-                <enum>Qt::Horizontal</enum>
+                <enum>Qt::Orientation::Horizontal</enum>
                </property>
                <property name="sizeHint" stdset="0">
                 <size>
@@ -1109,13 +1458,13 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
           <item>
            <widget class="QTableWidget" name="tableReport">
             <property name="editTriggers">
-             <set>QAbstractItemView::NoEditTriggers</set>
+             <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
             </property>
             <property name="alternatingRowColors">
              <bool>true</bool>
             </property>
             <property name="selectionBehavior">
-             <enum>QAbstractItemView::SelectRows</enum>
+             <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
             </property>
             <property name="sortingEnabled">
              <bool>true</bool>

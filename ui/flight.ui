@@ -1,235 +1,344 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>FlightDialog</class>
+ <widget class="QDialog" name="FlightDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>420</width>
-    <height>480</height>
+    <width>520</width>
+    <height>668</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Рейс</string>
   </property>
   <property name="styleSheet">
-   <string>
+   <string notr="true">
 QDialog {
-    background-color: #0f1923;
-    color: #d0dce8;
+    background-color: #f0f6fc;
     font-family: 'Segoe UI', Arial, sans-serif;
-    font-size: 13px;
+}
+QLabel#titleLabel {
+    color: #004a7c;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 4px 0 2px 0;
+}
+QFrame#headerLine {
+    background-color: #0077be;
+    max-height: 2px;
+    border: none;
+}
+QGroupBox {
+    background-color: #ffffff;
+    border: 1px solid #c0d8ec;
+    border-radius: 8px;
+    margin-top: 10px;
+    padding: 6px 10px 10px 10px;
+    font-weight: bold;
+    font-size: 12px;
+    color: #004a7c;
+}
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 8px;
+    color: #0077be;
+    background-color: #f0f6fc;
 }
 QLabel {
-    color: #7ab8d8;
+    color: #2a5a8a;
     font-size: 12px;
+    font-weight: 600;
 }
-QLineEdit, QComboBox, QDateEdit {
-    background-color: #1a2d42;
-    color: #d0dce8;
-    border: 1px solid #1e3a55;
+QLineEdit, QComboBox, QDateEdit, QTimeEdit {
+    background-color: #ffffff;
+    color: #1a3a5c;
+    border: 1px solid #a0c4e0;
     border-radius: 5px;
     padding: 5px 10px;
     font-size: 12px;
-    min-height: 26px;
+    min-height: 28px;
 }
-QLineEdit:focus, QComboBox:focus, QDateEdit:focus {
-    border: 1px solid #4fc3f7;
+QLineEdit:focus, QComboBox:focus, QDateEdit:focus, QTimeEdit:focus {
+    border: 1.5px solid #0077be;
+    background-color: #fafdff;
 }
-QComboBox::drop-down { border: none; width: 20px; }
-QComboBox QAbstractItemView {
-    background-color: #1a2d42;
-    color: #d0dce8;
-    border: 1px solid #1e3a55;
-    selection-background-color: #0d2137;
-    selection-color: #4fc3f7;
-}
-QPushButton {
-    background-color: #1a3a5c;
-    color: #b8d4ec;
-    border: 1px solid #1e4a72;
-    border-radius: 5px;
-    padding: 6px 20px;
+QPushButton#btnSave {
+    background-color: #0077be;
+    color: #ffffff;
+    border: none;
+    border-radius: 7px;
+    padding: 8px 28px;
     font-size: 13px;
-    min-height: 30px;
+    font-weight: bold;
+    min-height: 34px;
 }
-QPushButton:hover {
-    background-color: #1e4a72;
-    color: #e0f0ff;
-    border-color: #4fc3f7;
+QPushButton#btnSave:hover { background-color: #005fa0; }
+QPushButton#btnSave:pressed { background-color: #004880; }
+QPushButton#btnCancel {
+    background-color: #e8f0f8;
+    color: #2a5a8a;
+    border: 1px solid #a0c4e0;
+    border-radius: 7px;
+    padding: 8px 28px;
+    font-size: 13px;
+    min-height: 34px;
 }
+QPushButton#btnCancel:hover { background-color: #d4e6f5; }
    </string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="mainLayout">
    <property name="spacing">
-    <number>10</number>
+    <number>9</number>
    </property>
    <property name="leftMargin">
-    <number>20</number>
-   </property>
-   <property name="topMargin">
-    <number>20</number>
-   </property>
-   <property name="rightMargin">
-    <number>20</number>
-   </property>
-   <property name="bottomMargin">
-    <number>20</number>
+    <number>9</number>
    </property>
    <item>
-    <layout class="QFormLayout" name="formLayout">
-     <property name="horizontalSpacing">
-      <number>12</number>
+    <widget class="QLabel" name="titleLabel">
+     <property name="text">
+      <string>Добавление рейса</string>
      </property>
-     <property name="verticalSpacing">
-      <number>10</number>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="headerLine">
+     <property name="frameShape">
+      <enum>QFrame::Shape::HLine</enum>
      </property>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_1">
-       <property name="text">
-        <string>Номер рейса:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="flight_number_lineEdit"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Аэропорт:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QComboBox" name="airport_comboBox"/>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Самолёт:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QComboBox" name="airplane_comboBox"/>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>Время вылета:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QLineEdit" name="time_lineEdit">
-       <property name="placeholderText">
-        <string>чч:мм:сс</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Время прилёта:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QLineEdit" name="time2_lineEdit">
-       <property name="placeholderText">
-        <string>чч:мм:сс</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="0">
-      <widget class="QLabel" name="label_6">
-       <property name="text">
-        <string>Дата вылета:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="1">
-      <widget class="QDateEdit" name="dateEdit">
-       <property name="calendarPopup">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="0">
-      <widget class="QLabel" name="label_7">
-       <property name="text">
-        <string>Статус:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="1">
-      <widget class="QComboBox" name="status_comboBox"/>
-     </item>
-     <item row="7" column="0">
-      <widget class="QLabel" name="label_8">
-       <property name="text">
-        <string>Мест (Эконом):</string>
-       </property>
-      </widget>
-     </item>
-     <item row="7" column="1">
-      <widget class="QLineEdit" name="economy_seats_lineEdit">
-       <property name="placeholderText">
-        <string>0</string>
-       </property>
-      </widget>
-     </item>
-     <item row="8" column="0">
-      <widget class="QLabel" name="label_9">
-       <property name="text">
-        <string>Мест (Бизнес):</string>
-       </property>
-      </widget>
-     </item>
-     <item row="8" column="1">
-      <widget class="QLineEdit" name="business_seats_lineEdit">
-       <property name="placeholderText">
-        <string>0</string>
-       </property>
-      </widget>
-     </item>
-     <item row="9" column="0">
-      <widget class="QLabel" name="label_10">
-       <property name="text">
-        <string>Мест (Первый):</string>
-       </property>
-      </widget>
-     </item>
-     <item row="9" column="1">
-      <widget class="QLineEdit" name="first_class_seats_lineEdit">
-       <property name="placeholderText">
-        <string>0</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupMain">
+     <property name="title">
+      <string>Основная информация</string>
+     </property>
+     <layout class="QGridLayout" name="gridMain">
+      <property name="spacing">
+       <number>8</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_number">
+        <property name="text">
+         <string>Номер рейса *</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="flight_number_lineEdit">
+        <property name="placeholderText">
+         <string>SU-1234</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="lbl_status">
+        <property name="text">
+         <string>Статус *</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QComboBox" name="status_comboBox">
+        <item>
+         <property name="text">
+          <string>По расписанию</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Задержан</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Отменён</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Выполнен</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lbl_plane">
+        <property name="text">
+         <string>Самолёт *</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" colspan="3">
+       <widget class="QComboBox" name="airplane_comboBox"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupRoute">
+     <property name="title">
+      <string>Маршрут</string>
+     </property>
+     <layout class="QGridLayout" name="gridRoute">
+      <property name="spacing">
+       <number>8</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_dep">
+        <property name="text">
+         <string>Аэропорт отправления *</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="departure_airport_comboBox"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lbl_arr">
+        <property name="text">
+         <string>Аэропорт прибытия *</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="arrival_airport_comboBox"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupSchedule">
+     <property name="title">
+      <string>Расписание</string>
+     </property>
+     <layout class="QGridLayout" name="gridSchedule">
+      <property name="spacing">
+       <number>8</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_date">
+        <property name="text">
+         <string>Дата вылета *</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QDateEdit" name="dateEdit">
+        <property name="displayFormat">
+         <string>dd.MM.yyyy</string>
+        </property>
+        <property name="calendarPopup">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="lbl_dep_time">
+        <property name="text">
+         <string>Время вылета *</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QTimeEdit" name="time_timeEdit">
+        <property name="displayFormat">
+         <string>HH:mm</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="lbl_arr_time">
+        <property name="text">
+         <string>Время прилёта *</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QTimeEdit" name="time2_timeEdit">
+        <property name="displayFormat">
+         <string>HH:mm</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupSeats">
+     <property name="title">
+      <string>Количество мест</string>
+     </property>
+     <layout class="QHBoxLayout" name="hSeats">
+      <property name="spacing">
+       <number>16</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="lbl_eco">
+        <property name="text">
+         <string>Эконом *</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="economy_seats_lineEdit">
+        <property name="placeholderText">
+         <string>0</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="lbl_biz">
+        <property name="text">
+         <string>Бизнес *</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="business_seats_lineEdit">
+        <property name="placeholderText">
+         <string>0</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="lbl_first">
+        <property name="text">
+         <string>Первый *</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="first_class_seats_lineEdit">
+        <property name="placeholderText">
+         <string>0</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
     <spacer>
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>10</height>
+       <height>8</height>
       </size>
      </property>
     </spacer>
    </item>
    <item>
-    <layout class="QHBoxLayout">
+    <layout class="QHBoxLayout" name="btnLayout">
      <item>
       <spacer>
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -240,9 +349,16 @@ QPushButton:hover {
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="btnCancel">
        <property name="text">
-        <string>Добавить</string>
+        <string>Отмена</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnSave">
+       <property name="text">
+        <string>Сохранить</string>
        </property>
       </widget>
      </item>
