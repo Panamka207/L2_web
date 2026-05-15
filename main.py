@@ -5,6 +5,12 @@ from PyQt6.QtWidgets import (QApplication, QLineEdit, QMainWindow, QHeaderView,
                              QPushButton, QTableWidgetItem, QDialog, QMessageBox)
 from PyQt6.QtCore import QDate, Qt
 from PyQt6.QtGui import QBrush
+from docx import Document
+from docx.shared import Inches, Pt, RGBColor, Cm
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.enum.table import WD_TABLE_ALIGNMENT
+from datetime import datetime
+import os
 
 
 # ─────────────────────────────────────────────────────────────
@@ -299,6 +305,298 @@ class Database:
 
 
 # ─────────────────────────────────────────────────────────────
+#  REPORT GENERATOR
+# ─────────────────────────────────────────────────────────────
+class ReportGenerator:
+    """Класс для генерации отчетов в формате Word"""
+
+    @staticmethod
+    def generate_flight_report(data, date_from, date_to):
+        """Генерация отчета по рейсам"""
+        doc = Document()
+
+        # Заголовок
+        title = doc.add_heading('ОТЧЕТ ПО РЕЙСАМ', 0)
+        title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+        # Период
+        period = doc.add_paragraph()
+        period.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        period_run = period.add_run(f'Период: {date_from} - {date_to}')
+        period_run.font.size = Pt(12)
+
+        doc.add_paragraph()
+
+        # Информация о формировании
+        info = doc.add_paragraph()
+        info.add_run(
+            f'Дата формирования: {datetime.now().strftime("%d.%m.%Y %H:%M")}').bold = True
+
+        doc.add_paragraph()
+
+        # Таблица с данными
+        table = doc.add_table(rows=1, cols=6)
+        table.style = 'Table Grid'
+        table.alignment = WD_TABLE_ALIGNMENT.CENTER
+
+        # Заголовки таблицы
+        headers = ['№', 'Номер рейса', 'Аэропорт',
+                   'Самолёт', 'Дата вылета', 'Статус']
+        for i, header in enumerate(headers):
+            cell = table.rows[0].cells[i]
+            cell.text = header
+            # Форматирование заголовков
+            for paragraph in cell.paragraphs:
+                paragraph.runs[0].font.bold = True
+                paragraph.runs[0].font.size = Pt(11)
+
+        # Заполнение данных
+        for idx, row in enumerate(data, 1):
+            cells = table.add_row().cells
+            cells[0].text = str(idx)
+            cells[1].text = str(row[0])  # flight_number
+            cells[2].text = str(row[1])  # airport name
+            cells[3].text = str(row[2])  # model
+            cells[4].text = str(row[3])  # departure_date
+            cells[5].text = str(row[5])  # status
+
+        # Итоговая информация
+        doc.add_paragraph()
+        summary = doc.add_paragraph()
+        summary.add_run(f'Всего рейсов: {len(data)}').bold = True
+
+        # Добавляем место для подписи
+        doc.add_paragraph()
+        doc.add_paragraph()
+
+        # Таблица для подписей
+        signature_table = doc.add_table(rows=2, cols=2)
+        signature_table.style = None
+
+        # Место для подписи администратора
+        admin_signature_cell = signature_table.rows[0].cells[0]
+        admin_signature_cell.text = "Администратор"
+        admin_signature_para = admin_signature_cell.paragraphs[0]
+        admin_signature_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        admin_signature_para.runs[0].font.bold = True
+
+        # Место для печати
+        stamp_cell = signature_table.rows[0].cells[1]
+        stamp_cell.text = "М.П."
+        stamp_para = stamp_cell.paragraphs[0]
+        stamp_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        stamp_para.runs[0].font.bold = True
+
+        # Пустые строки для подписи
+        signature_cell = signature_table.rows[1].cells[0]
+        signature_cell.text = "_____________"
+        signature_para = signature_cell.paragraphs[0]
+        signature_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+        date_cell = signature_table.rows[1].cells[1]
+        date_cell.text = f"«___» ________ 20__ г."
+        date_para = date_cell.paragraphs[0]
+        date_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+        # Сохранение
+        filename = f'Отчет_по_рейсам_{datetime.now().strftime("%Y%m%d_%H%M%S")}.docx'
+        doc.save(filename)
+        return filename
+
+    @staticmethod
+    def generate_sales_report(data, date_from, date_to):
+        """Генерация отчета по продажам билетов"""
+        doc = Document()
+
+        # Заголовок
+        title = doc.add_heading('ОТЧЕТ ПО ПРОДАЖАМ БИЛЕТОВ', 0)
+        title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+        # Период
+        period = doc.add_paragraph()
+        period.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        period_run = period.add_run(f'Период: {date_from} - {date_to}')
+        period_run.font.size = Pt(12)
+
+        doc.add_paragraph()
+
+        # Информация о формировании
+        info = doc.add_paragraph()
+        info.add_run(
+            f'Дата формирования: {datetime.now().strftime("%d.%m.%Y %H:%M")}').bold = True
+
+        doc.add_paragraph()
+
+        # Таблица с данными
+        table = doc.add_table(rows=1, cols=4)
+        table.style = 'Table Grid'
+        table.alignment = WD_TABLE_ALIGNMENT.CENTER
+
+        # Заголовки таблицы
+        headers = ['Номер рейса', 'Продано билетов',
+                   'Выручка (руб.)', 'Средняя цена (руб.)']
+        for i, header in enumerate(headers):
+            cell = table.rows[0].cells[i]
+            cell.text = header
+            for paragraph in cell.paragraphs:
+                paragraph.runs[0].font.bold = True
+                paragraph.runs[0].font.size = Pt(11)
+
+        # Заполнение данных
+        for row in data:
+            cells = table.add_row().cells
+            cells[0].text = str(row[0])
+            cells[1].text = str(row[1])
+            cells[2].text = f"{row[2]:,.2f}" if row[2] else "0.00"
+            cells[3].text = f"{row[3]:,.2f}" if row[3] else "0.00"
+
+        # Итоговая информация
+        total_revenue = sum(row[2] or 0 for row in data)
+        total_tickets = sum(row[1] or 0 for row in data)
+
+        doc.add_paragraph()
+        summary = doc.add_paragraph()
+        summary.add_run(f'Всего продано билетов: {total_tickets}').bold = True
+        doc.add_paragraph()
+        summary2 = doc.add_paragraph()
+        summary2.add_run(
+            f'Общая выручка: {total_revenue:,.2f} руб.').bold = True
+
+        # Добавляем место для подписи
+        doc.add_paragraph()
+        doc.add_paragraph()
+
+        # Таблица для подписей
+        signature_table = doc.add_table(rows=2, cols=2)
+        signature_table.style = None
+
+        # Место для подписи администратора
+        admin_signature_cell = signature_table.rows[0].cells[0]
+        admin_signature_cell.text = "Администратор"
+        admin_signature_para = admin_signature_cell.paragraphs[0]
+        admin_signature_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        admin_signature_para.runs[0].font.bold = True
+
+        # Место для печати
+        stamp_cell = signature_table.rows[0].cells[1]
+        stamp_cell.text = "М.П."
+        stamp_para = stamp_cell.paragraphs[0]
+        stamp_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        stamp_para.runs[0].font.bold = True
+
+        # Пустые строки для подписи
+        signature_cell = signature_table.rows[1].cells[0]
+        signature_cell.text = "_____________"
+        signature_para = signature_cell.paragraphs[0]
+        signature_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+        date_cell = signature_table.rows[1].cells[1]
+        date_cell.text = f"«___» ________ 20__ г."
+        date_para = date_cell.paragraphs[0]
+        date_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+        # Сохранение
+        filename = f'Отчет_по_продажам_{datetime.now().strftime("%Y%m%d_%H%M%S")}.docx'
+        doc.save(filename)
+        return filename
+
+    @staticmethod
+    def generate_aircraft_load_report(data, date_from, date_to):
+        """Генерация отчета по загруженности самолетов"""
+        doc = Document()
+
+        # Заголовок
+        title = doc.add_heading('ОТЧЕТ ПО ЗАГРУЖЕННОСТИ САМОЛЕТОВ', 0)
+        title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+        # Период
+        period = doc.add_paragraph()
+        period.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        period_run = period.add_run(f'Период: {date_from} - {date_to}')
+        period_run.font.size = Pt(12)
+
+        doc.add_paragraph()
+
+        # Информация о формировании
+        info = doc.add_paragraph()
+        info.add_run(
+            f'Дата формирования: {datetime.now().strftime("%d.%m.%Y %H:%M")}').bold = True
+
+        doc.add_paragraph()
+
+        # Таблица с данными
+        table = doc.add_table(rows=1, cols=3)
+        table.style = 'Table Grid'
+        table.alignment = WD_TABLE_ALIGNMENT.CENTER
+
+        # Заголовки таблицы
+        headers = ['Модель самолета', 'Количество рейсов', 'Всего пассажиров']
+        for i, header in enumerate(headers):
+            cell = table.rows[0].cells[i]
+            cell.text = header
+            for paragraph in cell.paragraphs:
+                paragraph.runs[0].font.bold = True
+                paragraph.runs[0].font.size = Pt(11)
+
+        # Заполнение данных
+        for row in data:
+            cells = table.add_row().cells
+            cells[0].text = str(row[0])
+            cells[1].text = str(row[1])
+            cells[2].text = str(row[2])
+
+        # Итоговая информация
+        total_flights = sum(row[1] or 0 for row in data)
+        total_passengers = sum(row[2] or 0 for row in data)
+
+        doc.add_paragraph()
+        summary = doc.add_paragraph()
+        summary.add_run(f'Всего выполнено рейсов: {total_flights}').bold = True
+        doc.add_paragraph()
+        summary2 = doc.add_paragraph()
+        summary2.add_run(
+            f'Всего перевезено пассажиров: {total_passengers}').bold = True
+
+        # Добавляем место для подписи
+        doc.add_paragraph()
+        doc.add_paragraph()
+
+        # Таблица для подписей
+        signature_table = doc.add_table(rows=2, cols=2)
+        signature_table.style = 'Table Grid'
+
+        # Место для подписи администратора
+        admin_signature_cell = signature_table.rows[0].cells[0]
+        admin_signature_cell.text = "Администратор"
+        admin_signature_para = admin_signature_cell.paragraphs[0]
+        admin_signature_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        admin_signature_para.runs[0].font.bold = True
+
+        # Место для печати
+        stamp_cell = signature_table.rows[0].cells[1]
+        stamp_cell.text = "М.П."
+        stamp_para = stamp_cell.paragraphs[0]
+        stamp_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        stamp_para.runs[0].font.bold = True
+
+        # Пустые строки для подписи
+        signature_cell = signature_table.rows[1].cells[0]
+        signature_cell.text = "_____________"
+        signature_para = signature_cell.paragraphs[0]
+        signature_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+        date_cell = signature_table.rows[1].cells[1]
+        date_cell.text = f"«___» ________ 20__ г."
+        date_para = date_cell.paragraphs[0]
+        date_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+        # Сохранение
+        filename = f'Отчет_по_загруженности_{datetime.now().strftime("%Y%m%d_%H%M%S")}.docx'
+        doc.save(filename)
+        return filename
+
+
+# ─────────────────────────────────────────────────────────────
 #  LOGIN WINDOW
 # ─────────────────────────────────────────────────────────────
 class LoginWindow(QDialog):
@@ -328,8 +626,6 @@ class LoginWindow(QDialog):
                 "Успех",
                 f"Добро пожаловать, {login}\nРоль: {role}"
             )
-            # НЕ закрываем соединение
-            # self.db.close()  # Закомментируйте или удалите эту строку
 
             self.main_window = MyWidget()
             self.main_window.show()
@@ -357,7 +653,6 @@ class FlightDialog(QDialog):
             "Редактирование рейса" if flight_id else "Добавление рейса")
         self._load_combos()
         if not flight_id:
-            # Дата по умолчанию — сегодня
             self.dateEdit.setDate(QDate.currentDate())
         if flight_id:
             self._fill_data()
@@ -378,9 +673,6 @@ class FlightDialog(QDialog):
             cursor.execute(
                 "SELECT * FROM flight WHERE flight_id=%s", (self.flight_id,))
             row = cursor.fetchone()
-        # row: flight_id, airport_id, airplane_id, flight_number,
-        #       departure_time, arrival_time, departure_date, status,
-        #       economy_seats, business_seats, first_class_seats
         if row:
             self.flight_number_lineEdit.setText(str(row[3]))
             idx = self.airport_comboBox.findData(row[1])
@@ -395,13 +687,11 @@ class FlightDialog(QDialog):
             idx = self.status_comboBox.findText(str(row[7]))
             if idx >= 0:
                 self.status_comboBox.setCurrentIndex(idx)
-            # Заполняем поля мест
             self.economy_seats_lineEdit.setText(str(row[8]))
             self.business_seats_lineEdit.setText(str(row[9]))
             self.first_class_seats_lineEdit.setText(str(row[10]))
 
     def save(self):
-        # Валидация мест
         try:
             economy = int(self.economy_seats_lineEdit.text().strip() or 0)
             business = int(self.business_seats_lineEdit.text().strip() or 0)
@@ -505,7 +795,6 @@ class TicketDialog(QDialog):
             "Редактирование билета" if ticket_id else "Добавление билета")
         self._load_combos()
         if not ticket_id:
-            # Дата покупки — сегодня
             self.dateEdit.setDate(QDate.currentDate())
         if ticket_id:
             self._fill_data()
@@ -566,7 +855,6 @@ class TicketDialog(QDialog):
             QMessageBox.warning(self, "Ошибка", "Введите номер билета")
             return
 
-        # Проверка наличия свободных мест (только при добавлении нового билета)
         if not self.ticket_id:
             if not self.db.check_available_seats(data['flight_id'], data['travel_class']):
                 QMessageBox.warning(
@@ -796,7 +1084,6 @@ class MyWidget(QMainWindow):
         self._connect_signals()
         self._load_all_data()
 
-        # Устанавливаем начальные значения фильтров
         self._setup_filters()
 
         self.dateFrom.setDate(QDate.currentDate())
@@ -808,7 +1095,6 @@ class MyWidget(QMainWindow):
 
     def _setup_filters(self):
         """Устанавливает начальные значения для фильтров"""
-        # Устанавливаем значения по умолчанию для комбобоксов
         if hasattr(self, 'cmbFlightStatus'):
             self.cmbFlightStatus.addItems(
                 ['Все', 'По расписанию', 'Задержан', 'Отменён', 'Выполнен'])
@@ -827,7 +1113,6 @@ class MyWidget(QMainWindow):
             self.cmbStaffGender.addItems(['Все', 'Мужской', 'Женский'])
             self.cmbStaffGender.setCurrentIndex(0)
 
-    # ── Table setup ───────────────────────────────────────────
     def _setup_tables(self):
         cfg = {
             self.tableReys:      ['ID', 'Номер рейса', 'Аэропорт', 'Самолёт',
@@ -848,7 +1133,6 @@ class MyWidget(QMainWindow):
             tw.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
             tw.setSortingEnabled(True)
 
-    # ── Signal connections ────────────────────────────────────
     def _connect_signals(self):
         self.flights_menuBtn.clicked.connect(
             lambda: self._switch(self.pageReys, 'Flight', self.filterPageFlights, self.flights_menuBtn))
@@ -865,12 +1149,10 @@ class MyWidget(QMainWindow):
         self.otchet_menuBtn.clicked.connect(
             lambda: self._switch(self.pageReports, 'Reports', self.filterPageReports, self.otchet_menuBtn))
 
-        # Кнопки поиска и сброса
         self.btnSearch.clicked.connect(self.search_and_filter)
         self.searchField.returnPressed.connect(self.search_and_filter)
         self.btnReset.clicked.connect(self._reset_filters)
 
-        # Фильтры
         if hasattr(self, 'cmbFlightStatus'):
             self.cmbFlightStatus.currentTextChanged.connect(
                 self.search_and_filter)
@@ -893,7 +1175,6 @@ class MyWidget(QMainWindow):
 
         self.btnGenerateReport.clicked.connect(self._generate_report)
 
-    # ── Page switch ───────────────────────────────────────────
     def _switch(self, page, table_name, filter_page, btn):
         for b in self.menu_buttons:
             b.setChecked(False)
@@ -907,11 +1188,8 @@ class MyWidget(QMainWindow):
             'Crew': 'Сотрудники', 'Reports': 'Отчёты'
         }
         self.pageTitle.setText(titles.get(table_name, ''))
-
-        # После переключения страницы обновляем отображение
         self.search_and_filter()
 
-    # ── Load data ─────────────────────────────────────────────
     def _load_all_data(self):
         self._raw['Flight'] = self.db.get_flights_with_details()
         self._raw['Passenger'] = self.db.select('passenger')
@@ -927,24 +1205,6 @@ class MyWidget(QMainWindow):
         self._fill_table(self.tablePlane,     self._raw['Airplane'])
         self._fill_table(self.tableStaff,     self._raw['Crew'])
 
-        self._refresh_country_combo()
-
-    def _refresh_country_combo(self):
-        if not hasattr(self, 'cmbAirportCountry'):
-            return
-
-        current = self.cmbAirportCountry.currentText()
-        self.cmbAirportCountry.blockSignals(True)
-        self.cmbAirportCountry.clear()
-        self.cmbAirportCountry.addItem("Все страны")
-        countries = sorted(
-            {str(row[3]) for row in self._raw.get('Airport', []) if row[3]})
-        self.cmbAirportCountry.addItems(countries)
-        idx = self.cmbAirportCountry.findText(current)
-        if idx >= 0:
-            self.cmbAirportCountry.setCurrentIndex(idx)
-        self.cmbAirportCountry.blockSignals(False)
-
     def _fill_table(self, tw, data):
         tw.setSortingEnabled(False)
         tw.clearContents()
@@ -957,20 +1217,16 @@ class MyWidget(QMainWindow):
 
         tw.setSortingEnabled(True)
 
-    # ── Search and Filter (улучшенный) ────────────────────────
     def search_and_filter(self):
-        """Основной метод поиска и фильтрации"""
         config = self.search_config.get(self.current_table)
         if not config:
             return
 
-        table_widget = config['table_widget']
         search_text = config['search_field'].text().strip().lower()
+        table_widget = config['table_widget']
 
-        # Получаем отфильтрованные данные
         filtered_data = self._apply_filters_to_data()
 
-        # Обновляем таблицу
         table_widget.setSortingEnabled(False)
         table_widget.setRowCount(len(filtered_data))
 
@@ -981,14 +1237,12 @@ class MyWidget(QMainWindow):
 
         table_widget.setSortingEnabled(True)
 
-        # Выделяем найденные строки, если есть поисковый запрос
         if search_text:
             table_widget.clearSelection()
             table_widget.setSelectionMode(
                 table_widget.SelectionMode.MultiSelection)
 
             for r, row_data in enumerate(filtered_data):
-                # Проверяем все поля строки на соответствие поисковому запросу
                 row_has_match = False
                 for val in row_data:
                     if val and search_text in str(val).lower():
@@ -1003,7 +1257,6 @@ class MyWidget(QMainWindow):
                 table_widget.SelectionMode.SingleSelection)
 
     def _apply_filters_to_data(self):
-        """Применяет фильтры к данным и возвращает отфильтрованный список"""
         data = self._raw.get(self.current_table, [])
 
         if not data:
@@ -1014,48 +1267,37 @@ class MyWidget(QMainWindow):
         for row in data:
             include_row = True
 
-            # Применяем фильтры в зависимости от текущей таблицы
             if self.current_table == 'Flight':
-                # Фильтр по статусу
                 status_filter = self.cmbFlightStatus.currentText(
                 ) if hasattr(self, 'cmbFlightStatus') else "Все"
                 if status_filter != "Все":
-                    # Статус находится на индексе 7
                     if len(row) > 7 and row[7] != status_filter:
                         include_row = False
 
             elif self.current_table == 'Ticket':
-                # Фильтр по статусу билета
                 status_filter = self.cmbTicketStatus.currentText(
                 ) if hasattr(self, 'cmbTicketStatus') else "Все"
                 if status_filter != "Все" and include_row:
-                    # Статус на индексе 8
                     if len(row) > 8 and row[8] != status_filter:
                         include_row = False
 
-                # Фильтр по классу билета
                 class_filter = self.cmbTicketClass.currentText(
                 ) if hasattr(self, 'cmbTicketClass') else "Все"
                 if class_filter != "Все" and include_row:
-                    # Класс на индексе 5
                     if len(row) > 5 and row[5] != class_filter:
                         include_row = False
 
             elif self.current_table == 'Airport':
-                # Фильтр по стране
                 country_filter = self.cmbAirportCountry.currentText() if hasattr(
                     self, 'cmbAirportCountry') else "Все страны"
                 if country_filter != "Все страны" and include_row:
-                    # Страна на индексе 3
                     if len(row) > 3 and row[3] != country_filter:
                         include_row = False
 
             elif self.current_table == 'Crew':
-                # Фильтр по полу
                 gender_filter = self.cmbStaffGender.currentText(
                 ) if hasattr(self, 'cmbStaffGender') else "Все"
                 if gender_filter != "Все" and include_row:
-                    # Пол на индексе 6
                     if len(row) > 6 and row[6] != gender_filter:
                         include_row = False
 
@@ -1064,14 +1306,10 @@ class MyWidget(QMainWindow):
 
         return filtered
 
-    # ── Reset ─────────────────────────────────────────────────
     def _reset_filters(self):
-        """Сброс всех фильтров и поиска"""
-        # Очищаем поле поиска
         if hasattr(self, 'searchField'):
             self.searchField.clear()
 
-        # Сбрасываем все фильтры
         if hasattr(self, 'cmbFlightStatus'):
             self.cmbFlightStatus.setCurrentIndex(0)
         if hasattr(self, 'cmbTicketStatus'):
@@ -1083,17 +1321,12 @@ class MyWidget(QMainWindow):
         if hasattr(self, 'cmbStaffGender'):
             self.cmbStaffGender.setCurrentIndex(0)
 
-        # Полностью обновляем данные
         self._hard_refresh()
 
-    # ── Hard refresh ──────────────────────────────────────────
     def _hard_refresh(self):
-        """Полное обновление всех данных"""
         self._load_all_data()
-        # После обновления применяем поиск и фильтры
         self.search_and_filter()
 
-    # ── Helpers ───────────────────────────────────────────────
     def _current_table_widget(self):
         return {
             'Flight':    self.tableReys,
@@ -1117,7 +1350,6 @@ class MyWidget(QMainWindow):
         id_item = tw.item(row, 0)
         return int(id_item.text()) if id_item else None
 
-    # ── CRUD ──────────────────────────────────────────────────
     def _add_record(self):
         if self.current_table == 'Reports':
             QMessageBox.information(
@@ -1169,7 +1401,6 @@ class MyWidget(QMainWindow):
                         QMessageBox.critical(
                             self, "Ошибка", f"Ошибка при удалении:\n{e}")
 
-    # ── Reports ───────────────────────────────────────────────
     def _generate_report(self):
         report_type = self.comboReportType.currentText()
         date_from = self.dateFrom.date().toString("yyyy-MM-dd")
@@ -1192,8 +1423,18 @@ class MyWidget(QMainWindow):
                         WHERE f.departure_date BETWEEN %s AND %s
                         ORDER BY f.departure_date, f.departure_time
                     """, (date_from, date_to))
-                    headers = ["Номер рейса", "Аэропорт", "Самолёт",
-                               "Дата вылета", "Время вылета", "Статус"]
+                    data = cursor.fetchall()
+
+                    if not data:
+                        QMessageBox.information(
+                            self, "Информация", "За выбранный период данных не найдено")
+                        return
+
+                    # Генерируем Word отчет
+                    filename = ReportGenerator.generate_flight_report(
+                        data, date_from, date_to)
+                    QMessageBox.information(
+                        self, "Успех", f"Отчет успешно сформирован!\nФайл сохранен: {filename}")
 
                 elif report_type == "Продажи билетов":
                     cursor.execute("""
@@ -1207,8 +1448,17 @@ class MyWidget(QMainWindow):
                         GROUP BY f.flight_id, f.flight_number
                         ORDER BY total_revenue DESC
                     """, (date_from, date_to))
-                    headers = ["Рейс", "Продано билетов",
-                               "Выручка", "Средняя цена"]
+                    data = cursor.fetchall()
+
+                    if not data:
+                        QMessageBox.information(
+                            self, "Информация", "За выбранный период данных не найдено")
+                        return
+
+                    filename = ReportGenerator.generate_sales_report(
+                        data, date_from, date_to)
+                    QMessageBox.information(
+                        self, "Успех", f"Отчет успешно сформирован!\nФайл сохранен: {filename}")
 
                 elif report_type == "Загруженность самолётов":
                     cursor.execute("""
@@ -1222,21 +1472,17 @@ class MyWidget(QMainWindow):
                         GROUP BY p.airplane_id, p.model
                         ORDER BY total_passengers DESC
                     """, (date_from, date_to))
-                    headers = ["Модель", "Кол-во рейсов", "Всего пассажиров"]
-                else:
-                    return
+                    data = cursor.fetchall()
 
-                data = cursor.fetchall()
+                    if not data:
+                        QMessageBox.information(
+                            self, "Информация", "За выбранный период данных не найдено")
+                        return
 
-            self.tableReport.setColumnCount(len(headers))
-            self.tableReport.setHorizontalHeaderLabels(headers)
-            self.tableReport.horizontalHeader().setSectionResizeMode(
-                QHeaderView.ResizeMode.Stretch)
-            self._fill_table(self.tableReport, data)
-
-            if not data:
-                QMessageBox.information(
-                    self, "Информация", "За выбранный период данных не найдено")
+                    filename = ReportGenerator.generate_aircraft_load_report(
+                        data, date_from, date_to)
+                    QMessageBox.information(
+                        self, "Успех", f"Отчет успешно сформирован!\nФайл сохранен: {filename}")
 
         except Exception as e:
             QMessageBox.critical(
