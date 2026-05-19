@@ -99,7 +99,7 @@ QLabel#errorLabel {
 
       <item>
        <widget class="QLabel" name="logoLabel">
-        <property name="text"><string>✈ АВИАСИСТЕМА</string></property>
+        <property name="text"><string>АВИАСИСТЕМА</string></property>
         <property name="alignment"><set>Qt::AlignCenter</set></property>
        </widget>
       </item>

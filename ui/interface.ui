@@ -333,9 +333,6 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
          <property name="text">
           <string>АВИАСИСТЕМА</string>
          </property>
-         <property name="alignment">
-          <set>Qt::AlignmentFlag::AlignCenter</set>
-         </property>
         </widget>
        </item>
        <item>
@@ -346,9 +343,6 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
          <property name="text">
           <string>Учёт авиарейсов</string>
          </property>
-         <property name="alignment">
-          <set>Qt::AlignmentFlag::AlignCenter</set>
-         </property>
         </widget>
        </item>
        <item>
@@ -357,7 +351,7 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
           <string>background-color: #1e3450; max-height: 1px; margin: 0 16px;</string>
          </property>
          <property name="frameShape">
-          <enum>QFrame::Shape::NoFrame</enum>
+          <enum>QFrame::NoFrame</enum>
          </property>
         </widget>
        </item>
@@ -436,9 +430,6 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
        </item>
        <item>
         <spacer name="sidespacer">
-         <property name="orientation">
-          <enum>Qt::Orientation::Vertical</enum>
-         </property>
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
@@ -453,7 +444,7 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
           <string>background-color: #1e3450; max-height: 1px; margin: 0 16px;</string>
          </property>
          <property name="frameShape">
-          <enum>QFrame::Shape::NoFrame</enum>
+          <enum>QFrame::NoFrame</enum>
          </property>
         </widget>
        </item>
@@ -490,9 +481,6 @@ QLabel#labelFilterClass, QLabel#labelFilterCountry {
          </item>
          <item>
           <spacer name="topBarSpacer">
-           <property name="orientation">
-            <enum>Qt::Orientation::Horizontal</enum>
-           </property>
            <property name="sizeHint" stdset="0">
             <size>
              <width>40</width>
@@ -670,10 +658,20 @@ QPushButton:pressed {
           </widget>
          </item>
          <item>
-          <spacer name="actionSpacer">
+          <spacer name="horizontalSpacer">
            <property name="orientation">
-            <enum>Qt::Orientation::Horizontal</enum>
+            <enum>Qt::Horizontal</enum>
            </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <spacer name="actionSpacer">
            <property name="sizeHint" stdset="0">
             <size>
              <width>40</width>
@@ -724,7 +722,7 @@ QPushButton:pressed {
             </size>
            </property>
            <property name="currentIndex">
-            <number>4</number>
+            <number>5</number>
            </property>
            <widget class="QWidget" name="filterPageFlights">
             <layout class="QHBoxLayout" name="filterFlightsLayout">
@@ -742,10 +740,20 @@ QPushButton:pressed {
               <widget class="QComboBox" name="cmbFlightStatus"/>
              </item>
              <item>
-              <spacer>
+              <spacer name="horizontalSpacer_3">
                <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
+                <enum>Qt::Horizontal</enum>
                </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <spacer>
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>40</width>
@@ -760,9 +768,6 @@ QPushButton:pressed {
             <layout class="QHBoxLayout" name="filterPassengersLayout">
              <item>
               <spacer>
-               <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
-               </property>
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>40</width>
@@ -799,10 +804,20 @@ QPushButton:pressed {
               <widget class="QComboBox" name="cmbTicketClass"/>
              </item>
              <item>
-              <spacer>
+              <spacer name="horizontalSpacer_4">
                <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
+                <enum>Qt::Horizontal</enum>
                </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <spacer>
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>40</width>
@@ -829,10 +844,20 @@ QPushButton:pressed {
               <widget class="QComboBox" name="cmbAirportCountry"/>
              </item>
              <item>
-              <spacer>
+              <spacer name="horizontalSpacer_5">
                <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
+                <enum>Qt::Horizontal</enum>
                </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <spacer>
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>40</width>
@@ -847,9 +872,6 @@ QPushButton:pressed {
             <layout class="QHBoxLayout" name="filterAirplanesLayout">
              <item>
               <spacer>
-               <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
-               </property>
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>40</width>
@@ -876,42 +898,23 @@ QPushButton:pressed {
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="cmbStaffGender">
-               <item>
-                <property name="text">
-                 <string>Все</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Мужской</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Женский</string>
-                </property>
-               </item>
-              </widget>
+              <widget class="QComboBox" name="cmbStaffGender"/>
              </item>
              <item>
-              <widget class="QLabel" name="labelFilterPosition">
-               <property name="styleSheet">
-                <string>color: #6a9ab8; font-size: 12px;</string>
+              <spacer name="horizontalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
                </property>
-               <property name="text">
-                <string>Должность:</string>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
                </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QComboBox" name="cmbStaffPosition"/>
+              </spacer>
              </item>
              <item>
               <spacer>
-               <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
-               </property>
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>40</width>
@@ -926,9 +929,6 @@ QPushButton:pressed {
             <layout class="QHBoxLayout" name="filterReportsLayout">
              <item>
               <spacer>
-               <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
-               </property>
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>40</width>
@@ -947,7 +947,7 @@ QPushButton:pressed {
       <item>
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="currentIndex">
-         <number>0</number>
+         <number>6</number>
         </property>
         <widget class="QWidget" name="pageReys">
          <layout class="QVBoxLayout" name="pageReysLayout">
@@ -1252,13 +1252,13 @@ QLabel#labelFilterCountry {
 </string>
             </property>
             <property name="editTriggers">
-             <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+             <set>QAbstractItemView::NoEditTriggers</set>
             </property>
             <property name="alternatingRowColors">
              <bool>true</bool>
             </property>
             <property name="selectionBehavior">
-             <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+             <enum>QAbstractItemView::SelectItems</enum>
             </property>
             <property name="sortingEnabled">
              <bool>true</bool>
@@ -1272,13 +1272,13 @@ QLabel#labelFilterCountry {
           <item>
            <widget class="QTableWidget" name="tablePassenger">
             <property name="editTriggers">
-             <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+             <set>QAbstractItemView::NoEditTriggers</set>
             </property>
             <property name="alternatingRowColors">
              <bool>true</bool>
             </property>
             <property name="selectionBehavior">
-             <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+             <enum>QAbstractItemView::SelectItems</enum>
             </property>
             <property name="sortingEnabled">
              <bool>true</bool>
@@ -1292,13 +1292,13 @@ QLabel#labelFilterCountry {
           <item>
            <widget class="QTableWidget" name="tableTickets">
             <property name="editTriggers">
-             <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+             <set>QAbstractItemView::NoEditTriggers</set>
             </property>
             <property name="alternatingRowColors">
              <bool>true</bool>
             </property>
             <property name="selectionBehavior">
-             <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+             <enum>QAbstractItemView::SelectItems</enum>
             </property>
             <property name="sortingEnabled">
              <bool>true</bool>
@@ -1312,13 +1312,13 @@ QLabel#labelFilterCountry {
           <item>
            <widget class="QTableWidget" name="tableAirport">
             <property name="editTriggers">
-             <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+             <set>QAbstractItemView::NoEditTriggers</set>
             </property>
             <property name="alternatingRowColors">
              <bool>true</bool>
             </property>
             <property name="selectionBehavior">
-             <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+             <enum>QAbstractItemView::SelectItems</enum>
             </property>
             <property name="sortingEnabled">
              <bool>true</bool>
@@ -1332,13 +1332,13 @@ QLabel#labelFilterCountry {
           <item>
            <widget class="QTableWidget" name="tablePlane">
             <property name="editTriggers">
-             <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+             <set>QAbstractItemView::NoEditTriggers</set>
             </property>
             <property name="alternatingRowColors">
              <bool>true</bool>
             </property>
             <property name="selectionBehavior">
-             <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+             <enum>QAbstractItemView::SelectItems</enum>
             </property>
             <property name="sortingEnabled">
              <bool>true</bool>
@@ -1352,13 +1352,13 @@ QLabel#labelFilterCountry {
           <item>
            <widget class="QTableWidget" name="tableStaff">
             <property name="editTriggers">
-             <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+             <set>QAbstractItemView::NoEditTriggers</set>
             </property>
             <property name="alternatingRowColors">
              <bool>true</bool>
             </property>
             <property name="selectionBehavior">
-             <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+             <enum>QAbstractItemView::SelectItems</enum>
             </property>
             <property name="sortingEnabled">
              <bool>true</bool>
@@ -1433,10 +1433,20 @@ QLabel#labelFilterCountry {
               </widget>
              </item>
              <item>
-              <spacer name="reportSpacer">
+              <spacer name="horizontalSpacer_6">
                <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
+                <enum>Qt::Horizontal</enum>
                </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <spacer name="reportSpacer">
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>40</width>
@@ -1458,13 +1468,13 @@ QLabel#labelFilterCountry {
           <item>
            <widget class="QTableWidget" name="tableReport">
             <property name="editTriggers">
-             <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+             <set>QAbstractItemView::NoEditTriggers</set>
             </property>
             <property name="alternatingRowColors">
              <bool>true</bool>
             </property>
             <property name="selectionBehavior">
-             <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+             <enum>QAbstractItemView::SelectItems</enum>
             </property>
             <property name="sortingEnabled">
              <bool>true</bool>

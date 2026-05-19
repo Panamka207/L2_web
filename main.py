@@ -37,23 +37,30 @@ class Database:
             print('БД не подключена:', e)
 
     def select(self, table):
+        self.ensure_connected()
         with self.connection.cursor() as cursor:
             cursor.execute(f"SELECT * FROM `{table}`;")
             return cursor.fetchall()
 
     def get_flights_with_details(self):
+        self.ensure_connected()
         with self.connection.cursor() as cursor:
             cursor.execute('''
-                SELECT f.flight_id, f.flight_number, a.name, p.model,
+                SELECT f.flight_id, f.flight_number,
+                       dep.name AS departure_airport,
+                       arr.name AS arrival_airport,
+                       p.model,
                        f.departure_time, f.arrival_time, f.departure_date, f.status,
                        f.economy_seats, f.business_seats, f.first_class_seats
                 FROM flight f
-                JOIN airport a ON f.airport_id = a.airport_id
-                JOIN airplane p ON f.airplane_id = p.airplane_id
+                JOIN airport dep ON f.departure_airport_id = dep.airport_id
+                JOIN airport arr ON f.arrival_airport_id   = arr.airport_id
+                JOIN airplane p  ON f.airplane_id          = p.airplane_id
             ''')
             return cursor.fetchall()
 
     def get_tickets_with_details(self):
+        self.ensure_connected()
         with self.connection.cursor() as cursor:
             cursor.execute('''
                 SELECT t.ticket_id,
@@ -68,49 +75,68 @@ class Database:
             return cursor.fetchall()
 
     # ── CRUD: Flight ──────────────────────────────────────────
+    # ── CRUD: Flight ──────────────────────────────────────────
     def insert_flight(self, data):
-        with self.connection.cursor() as cursor:
-            cursor.execute("""
-                INSERT INTO flight (flight_number, airport_id, airplane_id,
-                                    departure_time, arrival_time, departure_date, status,
-                                    economy_seats, business_seats, first_class_seats)
-                VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-            """, (data['flight_number'], data['airport_id'], data['airplane_id'],
-                  data['departure_time'], data['arrival_time'],
-                  data['departure_date'], data['status'],
-                  data['economy_seats'], data['business_seats'], data['first_class_seats']))
-        self.connection.commit()
+        try:
+            with self.connection.cursor() as cursor:
+                cursor.execute("""
+                    INSERT INTO flight (flight_number, departure_airport_id, arrival_airport_id,
+                                        airplane_id,
+                                        departure_time, arrival_time, departure_date, status,
+                                        economy_seats, business_seats, first_class_seats)
+                    VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                """, (data['flight_number'],
+                      data['departure_airport_id'], data['arrival_airport_id'],
+                      data['airplane_id'],
+                      data['departure_time'], data['arrival_time'],
+                      data['departure_date'], data['status'],
+                      data['economy_seats'], data['business_seats'], data['first_class_seats']))
+            self.connection.commit()
+            return True
+        except pymysql.err.IntegrityError as e:
+            self.connection.rollback()
+            print(f"Ошибка целостности данных: {e}")
+            # Здесь можно вызвать QMessageBox, чтобы пользователь увидел ошибку в интерфейсе
+            return False
 
     def update_flight(self, flight_id, data):
-        with self.connection.cursor() as cursor:
-            cursor.execute("""
-                UPDATE flight
-                SET
-                    flight_number=%s,
-                    airport_id=%s,
-                    airplane_id=%s,
-                    departure_time=%s,
-                    arrival_time=%s,
-                    departure_date=%s,
-                    status=%s,
-                    economy_seats=%s,
-                    business_seats=%s,
-                    first_class_seats=%s
-                WHERE flight_id=%s
-            """, (
-                data['flight_number'],
-                data['airport_id'],
-                data['airplane_id'],
-                data['departure_time'],
-                data['arrival_time'],
-                data['departure_date'],
-                data['status'],
-                data['economy_seats'],
-                data['business_seats'],
-                data['first_class_seats'],
-                flight_id
-            ))
-        self.connection.commit()
+        try:
+            with self.connection.cursor() as cursor:
+                cursor.execute("""
+                    UPDATE flight
+                    SET
+                        flight_number=%s,
+                        departure_airport_id=%s,
+                        arrival_airport_id=%s,
+                        airplane_id=%s,
+                        departure_time=%s,
+                        arrival_time=%s,
+                        departure_date=%s,
+                        status=%s,
+                        economy_seats=%s,
+                        business_seats=%s,
+                        first_class_seats=%s
+                    WHERE flight_id=%s
+                """, (
+                    data['flight_number'],
+                    data['departure_airport_id'],
+                    data['arrival_airport_id'],
+                    data['airplane_id'],
+                    data['departure_time'],
+                    data['arrival_time'],
+                    data['departure_date'],
+                    data['status'],
+                    data['economy_seats'],
+                    data['business_seats'],
+                    data['first_class_seats'],
+                    flight_id
+                ))
+            self.connection.commit()
+            return True
+        except pymysql.err.IntegrityError as e:
+            self.connection.rollback()
+            print(f"Ошибка обновления данных: {e}")
+            return False
 
     def delete_flight(self, flight_id):
         with self.connection.cursor() as cursor:
@@ -289,6 +315,19 @@ class Database:
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT flight_id, flight_number FROM flight")
             return cursor.fetchall()
+
+    def get_airport_countries(self):
+        with self.connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT DISTINCT country FROM airport ORDER BY country")
+            return [row[0] for row in cursor.fetchall()]
+
+    def ensure_connected(self):
+        """Переподключается к БД если соединение потеряно."""
+        try:
+            self.connection.ping(reconnect=True)
+        except Exception:
+            self.connect()
 
     def check_user(self, login, password):
         with self.connection.cursor() as cursor:
@@ -603,10 +642,14 @@ class LoginWindow(QDialog):
     def __init__(self):
         super().__init__()
         uic.loadUi('./ui/vhod.ui', self)
+
         self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
+
         self.btnLogin.clicked.connect(self.check_login)
         self.btnExit.clicked.connect(self.close)
+
         self.setWindowTitle("Авторизация")
+
         self.db = Database()
 
     def check_login(self):
@@ -621,15 +664,19 @@ class LoginWindow(QDialog):
 
         if result:
             role = result[0]
+
             QMessageBox.information(
                 self,
                 "Успех",
                 f"Добро пожаловать, {login}\nРоль: {role}"
             )
 
-            self.main_window = MyWidget()
+            # ПЕРЕДАЁМ РОЛЬ
+            self.main_window = MyWidget(role)
             self.main_window.show()
+
             self.close()
+
         else:
             QMessageBox.critical(
                 self,
@@ -649,6 +696,7 @@ class FlightDialog(QDialog):
         self.flight_id = flight_id
         self.btnSave.setText("Сохранить" if flight_id else "Добавить")
         self.btnSave.clicked.connect(self.save)
+        self.btnCancel.clicked.connect(self.reject)
         self.setWindowTitle(
             "Редактирование рейса" if flight_id else "Добавление рейса")
         self._load_combos()
@@ -658,9 +706,12 @@ class FlightDialog(QDialog):
             self._fill_data()
 
     def _load_combos(self):
-        self.airport_comboBox.clear()
-        for aid, name in self.db.get_airports():
-            self.airport_comboBox.addItem(name, aid)
+        airports = self.db.get_airports()
+        self.departure_airport_comboBox.clear()
+        self.arrival_airport_comboBox.clear()
+        for aid, name in airports:
+            self.departure_airport_comboBox.addItem(name, aid)
+            self.arrival_airport_comboBox.addItem(name, aid)
         self.airplane_comboBox.clear()
         for pid, model in self.db.get_airplanes():
             self.airplane_comboBox.addItem(model, pid)
@@ -674,22 +725,65 @@ class FlightDialog(QDialog):
                 "SELECT * FROM flight WHERE flight_id=%s", (self.flight_id,))
             row = cursor.fetchone()
         if row:
-            self.flight_number_lineEdit.setText(str(row[3]))
-            idx = self.airport_comboBox.findData(row[1])
-            if idx >= 0:
-                self.airport_comboBox.setCurrentIndex(idx)
-            idx = self.airplane_comboBox.findData(row[2])
+            # Соответствует реальной структуре из дампа:
+            # 0: flight_id, 1: airplane_id, 2: flight_number, 3: departure_time,
+            # 4: arrival_time, 5: departure_date, 6: status, 7: economy_seats,
+            # 8: business_seats, 9: first_class_seats, 10: departure_airport_id, 11: arrival_airport_id
+
+            # Номер рейса (индекс 2)
+            self.flight_number_lineEdit.setText(str(row[2]))
+
+            # Самолет (индекс 1)
+            idx = self.airplane_comboBox.findData(row[1])
             if idx >= 0:
                 self.airplane_comboBox.setCurrentIndex(idx)
-            self.time_lineEdit.setText(str(row[4]))
-            self.time2_lineEdit.setText(str(row[5]))
-            self.dateEdit.setDate(row[6])
-            idx = self.status_comboBox.findText(str(row[7]))
+
+            # Время вылета и прилета (индексы 3 и 4)
+            dep_time = row[3]
+            arr_time = row[4]
+            # Дата вылета (индекс 5)
+            dep_date = row[5]
+
+            def to_qtime(t):
+                from PyQt6.QtCore import QTime
+                if hasattr(t, 'seconds'):
+                    total = int(t.total_seconds())
+                    return QTime(total // 3600, (total % 3600) // 60)
+                elif isinstance(t, str):
+                    parts = t.split(':')
+                    return QTime(int(parts[0]), int(parts[1]))
+                return QTime(0, 0)
+
+            self.time_timeEdit.setTime(to_qtime(dep_time))
+            self.time2_timeEdit.setTime(to_qtime(arr_time))
+
+            if hasattr(dep_date, 'year'):
+                self.dateEdit.setDate(
+                    QDate(dep_date.year, dep_date.month, dep_date.day))
+            else:
+                self.dateEdit.setDate(QDate.fromString(
+                    str(dep_date), "yyyy-MM-dd"))
+
+            # Статус (индекс 6)
+            idx = self.status_comboBox.findText(str(row[6]))
             if idx >= 0:
                 self.status_comboBox.setCurrentIndex(idx)
-            self.economy_seats_lineEdit.setText(str(row[8]))
-            self.business_seats_lineEdit.setText(str(row[9]))
-            self.first_class_seats_lineEdit.setText(str(row[10]))
+
+            # Количество мест (индексы 7, 8, 9)
+            self.economy_seats_lineEdit.setText(str(row[7]))
+            self.business_seats_lineEdit.setText(str(row[8]))
+            self.first_class_seats_lineEdit.setText(str(row[9]))
+
+            # Аэропорты отправления и прибытия (индексы 10 и 11)
+            dep_airport_id = row[10]
+            arr_airport_id = row[11]
+
+            idx = self.departure_airport_comboBox.findData(dep_airport_id)
+            if idx >= 0:
+                self.departure_airport_comboBox.setCurrentIndex(idx)
+            idx = self.arrival_airport_comboBox.findData(arr_airport_id)
+            if idx >= 0:
+                self.arrival_airport_comboBox.setCurrentIndex(idx)
 
     def save(self):
         try:
@@ -702,19 +796,24 @@ class FlightDialog(QDialog):
             return
 
         data = {
-            'flight_number': self.flight_number_lineEdit.text().strip(),
-            'airport_id': self.airport_comboBox.currentData(),
-            'airplane_id': self.airplane_comboBox.currentData(),
-            'departure_time': self.time_lineEdit.text().strip(),
-            'arrival_time': self.time2_lineEdit.text().strip(),
-            'departure_date': self.dateEdit.date().toString("yyyy-MM-dd"),
-            'status': self.status_comboBox.currentText(),
-            'economy_seats': economy,
-            'business_seats': business,
-            'first_class_seats': first_cl,
+            'flight_number':        self.flight_number_lineEdit.text().strip(),
+            'departure_airport_id': self.departure_airport_comboBox.currentData(),
+            'arrival_airport_id':   self.arrival_airport_comboBox.currentData(),
+            'airplane_id':          self.airplane_comboBox.currentData(),
+            'departure_time':       self.time_timeEdit.time().toString("HH:mm"),
+            'arrival_time':         self.time2_timeEdit.time().toString("HH:mm"),
+            'departure_date':       self.dateEdit.date().toString("yyyy-MM-dd"),
+            'status':               self.status_comboBox.currentText(),
+            'economy_seats':        economy,
+            'business_seats':       business,
+            'first_class_seats':    first_cl,
         }
         if not data['flight_number']:
             QMessageBox.warning(self, "Ошибка", "Введите номер рейса")
+            return
+        if data['departure_airport_id'] == data['arrival_airport_id']:
+            QMessageBox.warning(
+                self, "Ошибка", "Аэропорты вылета и прилёта не могут совпадать")
             return
         try:
             if self.flight_id:
@@ -817,6 +916,8 @@ class TicketDialog(QDialog):
                 "SELECT * FROM ticket WHERE ticket_id=%s", (self.ticket_id,))
             row = cursor.fetchone()
         if row:
+            # row: (ticket_id, passenger_id, flight_id, ticket_number,
+            #        purchase_date, travel_class, seat, price, status)
             idx = self.passanger_comboBox.findData(row[1])
             if idx >= 0:
                 self.passanger_comboBox.setCurrentIndex(idx)
@@ -824,7 +925,13 @@ class TicketDialog(QDialog):
             if idx >= 0:
                 self.flight_comboBox.setCurrentIndex(idx)
             self.ticket_lineEdit.setText(str(row[3]))
-            self.dateEdit.setDate(row[4])
+            pur_date = row[4]
+            if hasattr(pur_date, 'year'):
+                self.dateEdit.setDate(
+                    QDate(pur_date.year, pur_date.month, pur_date.day))
+            else:
+                self.dateEdit.setDate(QDate.fromString(
+                    str(pur_date), "yyyy-MM-dd"))
             idx = self.comboBox.findText(str(row[5]))
             if idx >= 0:
                 self.comboBox.setCurrentIndex(idx)
@@ -979,12 +1086,24 @@ class CrewDialog(QDialog):
         uic.loadUi('./ui/sotrudnik.ui', self)
         self.db = db
         self.crew_id = crew_id
-        self.pushButton.setText("Сохранить" if crew_id else "Добавить")
-        self.pushButton.clicked.connect(self.save)
+
+        # Настройка кнопок по именам из UI
+        self.btnSave.setText("Сохранить" if crew_id else "Добавить")
+        self.btnSave.clicked.connect(self.save)
+        self.btnCancel.clicked.connect(self.reject)
+
         self.setWindowTitle(
             "Редактирование сотрудника" if crew_id else "Добавление сотрудника")
+
+        # Инициализация выпадающих списков
         self.gender_comboBox.clear()
         self.gender_comboBox.addItems(['Мужской', 'Женский'])
+
+        # Заполнение должностей (если у вас есть метод в БД, иначе захардкодить)
+        self.position_comboBox.clear()
+        self.position_comboBox.addItems(
+            ['Пилот', 'Штурман', 'Бортинженер', 'Стюардесса', 'Стюард'])
+
         if crew_id:
             self._fill_data()
 
@@ -994,30 +1113,48 @@ class CrewDialog(QDialog):
                 "SELECT * FROM crew WHERE crew_id=%s", (self.crew_id,))
             row = cursor.fetchone()
         if row:
+            # Схема: 0:crew_id, 1:last_name, 2:first_name, 3:middle_name,
+            #        4:qualification, 5:position, 6:gender, 7:date_of_birth
             self.last_name_lineEdit.setText(str(row[1]))
             self.first_name_lineEdit.setText(str(row[2]))
-            self.middle_name_lineEdit_2.setText(str(row[3]) if row[3] else '')
-            self.kval_lineEdit_3.setText(str(row[4]) if row[4] else '')
-            self.work_lineEdit_4.setText(str(row[5]))
+            self.middle_name_lineEdit.setText(str(row[3]) if row[3] else '')
+            self.kval_lineEdit.setText(str(row[4]) if row[4] else '')
+
+            # Должность через comboBox
+            idx = self.position_comboBox.findText(str(row[5]))
+            if idx >= 0:
+                self.position_comboBox.setCurrentIndex(idx)
+
+            # Пол через comboBox
             idx = self.gender_comboBox.findText(str(row[6]))
             if idx >= 0:
                 self.gender_comboBox.setCurrentIndex(idx)
-            self.dateEdit.setDate(row[7])
+
+            # Дата рождения через birth_dateEdit
+            dob = row[7]
+            if hasattr(dob, 'year'):
+                self.birth_dateEdit.setDate(
+                    QDate(dob.year, dob.month, dob.day))
+            else:
+                self.birth_dateEdit.setDate(
+                    QDate.fromString(str(dob), "yyyy-MM-dd"))
 
     def save(self):
         data = {
             'last_name': self.last_name_lineEdit.text().strip(),
             'first_name': self.first_name_lineEdit.text().strip(),
-            'middle_name': self.middle_name_lineEdit_2.text().strip() or None,
-            'qualification': self.kval_lineEdit_3.text().strip() or None,
-            'position': self.work_lineEdit_4.text().strip(),
+            'middle_name': self.middle_name_lineEdit.text().strip() or None,
+            'qualification': self.kval_lineEdit.text().strip() or None,
+            'position': self.position_comboBox.currentText(),
             'gender': self.gender_comboBox.currentText(),
-            'date_of_birth': self.dateEdit.date().toString("yyyy-MM-dd")
+            'date_of_birth': self.birth_dateEdit.date().toString("yyyy-MM-dd")
         }
+
         if not all([data['last_name'], data['first_name'], data['position']]):
             QMessageBox.warning(
                 self, "Ошибка", "Заполните все обязательные поля")
             return
+
         try:
             if self.crew_id:
                 self.db.update_crew(self.crew_id, data)
@@ -1037,8 +1174,12 @@ class CrewDialog(QDialog):
 #  MAIN WINDOW
 # ─────────────────────────────────────────────────────────────
 class MyWidget(QMainWindow):
-    def __init__(self):
+    def __init__(self, role):
         super().__init__()
+
+        # СОХРАНЯЕМ РОЛЬ
+        self.user_role = role
+
         uic.loadUi('./ui/interface.ui', self)
 
         self.db = Database()
@@ -1092,6 +1233,48 @@ class MyWidget(QMainWindow):
         self.flights_menuBtn.setChecked(True)
         self.stackedWidget.setCurrentWidget(self.pageReys)
         self.filterStack.setCurrentWidget(self.filterPageFlights)
+        self.setup_role_permissions()
+
+    def setup_role_permissions(self):
+
+        # ========================================================
+        # ДИСПЕТЧЕР
+        # ========================================================
+        if self.user_role == 'Диспетчер':
+            self.userLabel.setText('Диспетчер')
+        # НЕЛЬЗЯ УДАЛЯТЬ
+            self.btnDelete.setEnabled(False)
+
+        # СКРЫВАЕМ КНОПКИ РАЗДЕЛОВ
+            self.airport_menuBtn.hide()
+            self.airplane_menuBtn.hide()
+            self.sotrudnik_menuBtn.hide()
+
+        # СКРЫВАЕМ СТРАНИЦЫ
+            self.pageAirport.hide()
+            self.pagePlane.hide()
+            self.pageStaff.hide()
+
+        # ОТЧЕТЫ ОСТАВЛЯЕМ
+            self.otchet_menuBtn.show()
+
+    # ========================================================
+    # АДМИНИСТРАТОР
+    # ========================================================
+        elif self.user_role == 'Администратор':
+
+            # ПОЛНЫЙ ДОСТУП
+            self.btnDelete.setEnabled(True)
+
+            self.airport_menuBtn.show()
+            self.airplane_menuBtn.show()
+            self.sotrudnik_menuBtn.show()
+
+            self.pageAirport.show()
+            self.pagePlane.show()
+            self.pageStaff.show()
+
+            self.otchet_menuBtn.show()
 
     def _setup_filters(self):
         """Устанавливает начальные значения для фильтров"""
@@ -1109,13 +1292,22 @@ class MyWidget(QMainWindow):
             self.cmbTicketClass.addItems(['Все', 'Эконом', 'Бизнес', 'Первый'])
             self.cmbTicketClass.setCurrentIndex(0)
 
+        if hasattr(self, 'cmbAirportCountry'):
+            countries = ['Все страны']
+            try:
+                countries += self.db.get_airport_countries()
+            except Exception:
+                pass
+            self.cmbAirportCountry.addItems(countries)
+            self.cmbAirportCountry.setCurrentIndex(0)
+
         if hasattr(self, 'cmbStaffGender'):
             self.cmbStaffGender.addItems(['Все', 'Мужской', 'Женский'])
             self.cmbStaffGender.setCurrentIndex(0)
 
     def _setup_tables(self):
         cfg = {
-            self.tableReys:      ['ID', 'Номер рейса', 'Аэропорт', 'Самолёт',
+            self.tableReys:      ['ID', 'Номер рейса', 'Откуда', 'Куда', 'Самолёт',
                                   'Время вылета', 'Время прилёта', 'Дата', 'Статус',
                                   'Мест эконом', 'Мест бизнес', 'Мест первый'],
             self.tablePassenger: ['ID', 'Фамилия', 'Имя', 'Отчество', 'Паспорт', 'Телефон'],
@@ -1213,6 +1405,7 @@ class MyWidget(QMainWindow):
         for r, row in enumerate(data):
             for c, val in enumerate(row):
                 item = QTableWidgetItem(str(val) if val is not None else '')
+                item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)
                 tw.setItem(r, c, item)
 
         tw.setSortingEnabled(True)
@@ -1228,33 +1421,28 @@ class MyWidget(QMainWindow):
         filtered_data = self._apply_filters_to_data()
 
         table_widget.setSortingEnabled(False)
+        # Сбрасываем режим выделения — всегда Single
+        table_widget.setSelectionMode(
+            table_widget.SelectionMode.SingleSelection)
+        table_widget.clearSelection()
         table_widget.setRowCount(len(filtered_data))
 
+        from PyQt6.QtGui import QColor
+        HIGHLIGHT_BG = QColor(255, 255, 180)   # светло-жёлтый для совпадений
+
         for r, row_data in enumerate(filtered_data):
+            row_matches = search_text and any(
+                search_text in str(val).lower()
+                for val in row_data if val is not None
+            )
             for c, val in enumerate(row_data):
                 item = QTableWidgetItem(str(val) if val is not None else '')
+                item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)
+                if row_matches:
+                    item.setBackground(QBrush(HIGHLIGHT_BG))
                 table_widget.setItem(r, c, item)
 
         table_widget.setSortingEnabled(True)
-
-        if search_text:
-            table_widget.clearSelection()
-            table_widget.setSelectionMode(
-                table_widget.SelectionMode.MultiSelection)
-
-            for r, row_data in enumerate(filtered_data):
-                row_has_match = False
-                for val in row_data:
-                    if val and search_text in str(val).lower():
-                        row_has_match = True
-                        break
-
-                if row_has_match:
-                    table_widget.selectRow(r)
-        else:
-            table_widget.clearSelection()
-            table_widget.setSelectionMode(
-                table_widget.SelectionMode.SingleSelection)
 
     def _apply_filters_to_data(self):
         data = self._raw.get(self.current_table, [])
@@ -1271,7 +1459,9 @@ class MyWidget(QMainWindow):
                 status_filter = self.cmbFlightStatus.currentText(
                 ) if hasattr(self, 'cmbFlightStatus') else "Все"
                 if status_filter != "Все":
-                    if len(row) > 7 and row[7] != status_filter:
+                    # row: (id, flight_number, dep_airport, arr_airport, model,
+                    #        dep_time, arr_time, date, status, eco, biz, first)
+                    if len(row) > 8 and row[8] != status_filter:
                         include_row = False
 
             elif self.current_table == 'Ticket':
@@ -1325,6 +1515,20 @@ class MyWidget(QMainWindow):
 
     def _hard_refresh(self):
         self._load_all_data()
+        # Обновляем список стран в фильтре аэропортов
+        if hasattr(self, 'cmbAirportCountry'):
+            current_country = self.cmbAirportCountry.currentText()
+            self.cmbAirportCountry.blockSignals(True)
+            self.cmbAirportCountry.clear()
+            countries = ['Все страны']
+            try:
+                countries += self.db.get_airport_countries()
+            except Exception:
+                pass
+            self.cmbAirportCountry.addItems(countries)
+            idx = self.cmbAirportCountry.findText(current_country)
+            self.cmbAirportCountry.setCurrentIndex(idx if idx >= 0 else 0)
+            self.cmbAirportCountry.blockSignals(False)
         self.search_and_filter()
 
     def _current_table_widget(self):

@@ -3,9 +3,16 @@
  <class>StaffDialog</class>
  <widget class="QDialog" name="StaffDialog">
   <property name="geometry">
-   <rect><x>0</x><y>0</y><width>460</width><height>420</height></rect>
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>493</width>
+    <height>437</height>
+   </rect>
   </property>
-  <property name="windowTitle"><string>Сотрудник</string></property>
+  <property name="windowTitle">
+   <string>Сотрудник</string>
+  </property>
   <property name="styleSheet">
    <string notr="true">
 QDialog {
@@ -82,113 +89,236 @@ QPushButton#btnCancel:hover { background-color: #d4e6f5; }
    </string>
   </property>
   <layout class="QVBoxLayout" name="mainLayout">
-   <property name="spacing"><number>10</number></property>
-   <property name="contentsMargins"><number>18</number><number>16</number><number>18</number><number>16</number></property>
-
+   <property name="spacing">
+    <number>10</number>
+   </property>
+   <property name="contentsMargins" stdset="0">
+    <number>16</number>
+   </property>
    <item>
     <widget class="QLabel" name="titleLabel">
-     <property name="text"><string>Добавление сотрудника</string></property>
+     <property name="text">
+      <string>Добавление сотрудника</string>
+     </property>
     </widget>
    </item>
    <item>
     <widget class="QFrame" name="headerLine">
-     <property name="frameShape"><enum>QFrame::HLine</enum></property>
+     <property name="frameShape">
+      <enum>QFrame::HLine</enum>
+     </property>
     </widget>
    </item>
-
-   <!-- ФИО -->
    <item>
     <widget class="QGroupBox" name="groupFIO">
-     <property name="title"><string>ФИО</string></property>
+     <property name="title">
+      <string>ФИО</string>
+     </property>
      <layout class="QGridLayout" name="gridFIO">
-      <property name="spacing"><number>8</number></property>
+      <property name="spacing">
+       <number>8</number>
+      </property>
       <item row="0" column="0">
-       <widget class="QLabel"><property name="text"><string>Фамилия *</string></property></widget>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Фамилия *</string>
+        </property>
+       </widget>
       </item>
       <item row="0" column="1">
        <widget class="QLineEdit" name="last_name_lineEdit">
-        <property name="placeholderText"><string>Фамилия</string></property>
+        <property name="placeholderText">
+         <string>Фамилия</string>
+        </property>
        </widget>
       </item>
       <item row="0" column="2">
-       <widget class="QLabel"><property name="text"><string>Имя *</string></property></widget>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Имя *</string>
+        </property>
+       </widget>
       </item>
       <item row="0" column="3">
        <widget class="QLineEdit" name="first_name_lineEdit">
-        <property name="placeholderText"><string>Имя</string></property>
+        <property name="placeholderText">
+         <string>Имя</string>
+        </property>
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel"><property name="text"><string>Отчество</string></property></widget>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Отчество</string>
+        </property>
+       </widget>
       </item>
       <item row="1" column="1" colspan="3">
        <widget class="QLineEdit" name="middle_name_lineEdit">
-        <property name="placeholderText"><string>Отчество (необязательно)</string></property>
+        <property name="placeholderText">
+         <string>Отчество (необязательно)</string>
+        </property>
        </widget>
       </item>
      </layout>
     </widget>
    </item>
-
-   <!-- Должность и личные данные -->
    <item>
     <widget class="QGroupBox" name="groupJob">
-     <property name="title"><string>Должность и личные данные</string></property>
+     <property name="title">
+      <string>Должность и личные данные</string>
+     </property>
      <layout class="QGridLayout" name="gridJob">
-      <property name="spacing"><number>8</number></property>
-      <item row="0" column="0">
-       <widget class="QLabel"><property name="text"><string>Должность *</string></property></widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="position_comboBox"/>
-      </item>
-      <item row="0" column="2">
-       <widget class="QLabel"><property name="text"><string>Пол *</string></property></widget>
-      </item>
-      <item row="0" column="3">
-       <widget class="QComboBox" name="gender_comboBox">
-        <item><property name="text"><string>Мужской</string></property></item>
-        <item><property name="text"><string>Женский</string></property></item>
-       </widget>
-      </item>
+      <property name="spacing">
+       <number>8</number>
+      </property>
       <item row="1" column="0">
-       <widget class="QLabel"><property name="text"><string>Квалификация</string></property></widget>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Квалификация</string>
+        </property>
+       </widget>
       </item>
       <item row="1" column="1">
        <widget class="QLineEdit" name="kval_lineEdit">
-        <property name="placeholderText"><string>Категория / разряд</string></property>
+        <property name="placeholderText">
+         <string>Категория / разряд</string>
+        </property>
        </widget>
       </item>
       <item row="1" column="2">
-       <widget class="QLabel"><property name="text"><string>Дата рождения *</string></property></widget>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Дата рождения *</string>
+        </property>
+       </widget>
       </item>
       <item row="1" column="3">
        <widget class="QDateEdit" name="birth_dateEdit">
-        <property name="calendarPopup"><bool>true</bool></property>
-        <property name="displayFormat"><string>dd.MM.yyyy</string></property>
+        <property name="displayFormat">
+         <string>dd.MM.yyyy</string>
+        </property>
+        <property name="calendarPopup">
+         <bool>true</bool>
+        </property>
        </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="labelPosition">
+        <property name="text">
+         <string>Должность *</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="position_comboBox">
+        <item>
+         <property name="text">
+          <string>Пилот</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Штурман</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Бортинженер</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Стюардесса</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Стюард</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="labelGender">
+        <property name="text">
+         <string>Пол *</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QComboBox" name="gender_comboBox">
+        <item>
+         <property name="text">
+          <string>Мужской</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Женский</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </widget>
    </item>
-
    <item>
     <spacer>
-     <property name="orientation"><enum>Qt::Vertical</enum></property>
-     <property name="sizeHint" stdset="0"><size><width>20</width><height>8</height></size></property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>8</height>
+      </size>
+     </property>
     </spacer>
    </item>
    <item>
     <layout class="QHBoxLayout">
-     <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item>
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
      <item>
       <widget class="QPushButton" name="btnCancel">
-       <property name="text"><string>Отмена</string></property>
+       <property name="text">
+        <string>Отмена</string>
+       </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="btnSave">
-       <property name="text"><string>Сохранить</string></property>
+       <property name="text">
+        <string>Сохранить</string>
+       </property>
       </widget>
      </item>
     </layout>
